@@ -45,6 +45,10 @@ class Job_Meta_Boxes {
 	}
 
 	public function vacancy_metabox( $obj ) {
+		$meta = ['desc', 'salary', 'edu', 'shift', 'stage', 'time', 'contact', 'company'];
+		foreach ($meta as $value) {
+			$$value = get_post_meta( $obj->ID, $value, true );
+		}
 		$name = $this->plugin->job->vacancy;
 		require_once plugin_dir_path( __FILE__ ) . 'meta_partials/vacancy-meta-boxes.php';
 
