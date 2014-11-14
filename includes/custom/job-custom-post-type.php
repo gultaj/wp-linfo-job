@@ -1,29 +1,56 @@
 <?php 
 
 
-class Job_Custom_Post_Type {
+class Job_Custom_Post_Types {
 
-	public $post_type = "job";
+	public $vacancy = "job_vacancy";
+	
+	public $resume = "job_resume";
 
 
 	public function register() {
 		$args = [
             'labels' => [
-                'name'               => 'Работа',
+                'name'               => 'Вакансии',
                 'view_item'          => 'Просмотреть',
-                'add_new_item'       => 'Новое',
+                'add_new_item'       => 'Новая вакансия',
                 'add_new'            => 'Добавить',
                 'edit_item'          => 'Редактировать',
                 'update_item'        => 'Обновить',
             ],
-            // 'rewrite'            => ['slug' => self::SLUG.'/%taxonomy_name%', 'with_front' => false],
-            'supports'           => ['title', 'thumbnail', 'editor'],
+            'rewrite'            => ['slug' => 'job', 'with_front' => false],
+            'supports'           => ['title'],
+            'show_in_menu'  	 => 'edit.php?post_type=job_vacancy',
             'public'             => true,
-            'show_in_menu'  	 => 'edit.php?post_type=afisha',
-            'menu_icon'          => 'dashicons-carrot',
             'has_archive'        => true
         ];
 
-        register_post_type($this->post_type, $args);
+        register_post_type( $this->vacancy, $args );
+
+        $args['labels']['name'] = 'Резюме';
+        $args['labels']['add_new_item'] = 'Новое резюме';
+        $args['rewrite'] = ['slug' => 'job/resume', 'with_front' => false];
+
+        register_post_type( $this->resume, $args );
 	}
+
+    public function save( $obj_id, $obj) {
+        if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || wp_is_post_revision( $obj_id ) ) {
+            return $obj_id;
+        }
+        if (isset($_POST[$this->vacancy]))
+            do_action( 'save_'.$this->vacancy, $obj_id, $_POST[$this->vacancy] );
+        if (isset($_POST[$this->resume]))
+            do_action( 'save_'.$this->resume, $obj_id, $_POST[$this->resume] );
+    }
+
+    /**
+     * Заменяте поле 'name' на 'id{id объекта}'
+     */
+    public function before_save( $obj_data, $objarr ) {
+        if ($obj_data['post_type'] == $this->vacancy || $obj_data['post_type'] == $this->resume) {
+            $obj_data['post_name'] = 'id'.$objarr['ID'];
+        }
+        return $obj_data;
+    }
 }

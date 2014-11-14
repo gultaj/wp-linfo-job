@@ -22,23 +22,7 @@
  */
 class Wp_Linfo_Job_Admin {
 
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
+	private $plugin;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -47,11 +31,11 @@ class Wp_Linfo_Job_Admin {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin ) {
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
+		$this->plugin = $plugin;
+		// $this->version = $version;
+		// $this->job_post = $job_post;
 	}
 
 	/**
@@ -61,19 +45,7 @@ class Wp_Linfo_Job_Admin {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Wp_Linfo_Job_Admin_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Wp_Linfo_Job_Admin_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/linfo-job-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'css/linfo-job-admin.css', [], $this->plugin->get_version(), 'all' );
 
 	}
 
@@ -84,20 +56,12 @@ class Wp_Linfo_Job_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Wp_Linfo_Job_Admin_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Wp_Linfo_Job_Admin_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		wp_enqueue_script( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'js/linfo-job-admin.js', ['jquery'], $this->plugin->get_version(), false );
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/linfo-job-admin.js', array( 'jquery' ), $this->version, false );
+	}
 
+	public function create_menu_pages() {
+		add_menu_page( 'Работа', 'Работа', 'edit_posts', 'edit.php?post_type=' . $this->plugin->job->vacancy, '', 'dashicons-carrot', 25 );
 	}
 
 }
