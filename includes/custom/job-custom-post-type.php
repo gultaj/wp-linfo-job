@@ -7,20 +7,23 @@ class Job_Custom_Post_Types {
 	
 	public $resume = "job_resume";
 
+    public $slug = 'job';
+
 
 	public function register() {
 		$args = [
             'labels' => [
-                'name'               => 'Вакансии',
-                'view_item'          => 'Просмотреть',
-                'add_new_item'       => 'Новая вакансия',
-                'add_new'            => 'Добавить',
-                'edit_item'          => 'Редактировать',
-                'update_item'        => 'Обновить',
+                'name'         => 'Вакансии',
+                'view_item'    => 'Просмотреть',
+                'add_new_item' => 'Новая вакансия',
+                'add_new'      => 'Добавить',
+                'edit_item'    => 'Редактировать',
+                'update_item'  => 'Обновить',
             ],
-            'rewrite'            => ['slug' => 'job', 'with_front' => false],
+            'rewrite'            => ['slug' => $this->slug, 'with_front' => false],
             'supports'           => ['title'],
-            'show_in_menu'  	 => 'edit.php?post_type=job_vacancy',
+            'show_in_menu'       => 'edit.php?post_type=' . $this->vacancy,
+            'show_in_nav_menus'  => true,
             'public'             => true,
             'has_archive'        => true
         ];
@@ -29,7 +32,7 @@ class Job_Custom_Post_Types {
 
         $args['labels']['name'] = 'Резюме';
         $args['labels']['add_new_item'] = 'Новое резюме';
-        $args['rewrite'] = ['slug' => 'job/resume', 'with_front' => false];
+        $args['rewrite'] = ['slug' => $this->slug.'/resume', 'with_front' => false];
 
         register_post_type( $this->resume, $args );
 	}

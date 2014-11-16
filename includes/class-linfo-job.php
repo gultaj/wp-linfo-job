@@ -30,12 +30,14 @@
 class Wp_Linfo_Job {
 
 	protected $loader;
+	protected $name;
+	protected $version;
 
 	public $job;
 
 	public function __construct() {
 
-		$this->plugin_name = 'linfo-job';
+		$this->name = 'linfo-job';
 		$this->version = '1.0.0';
 		$this->path = plugin_dir_path( __DIR__ );
 
@@ -88,6 +90,9 @@ class Wp_Linfo_Job {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_head-nav-menus.php', $plugin_admin, 'add_menu_meta_box' );
+
+		$this->loader->add_filter( 'wp_get_nav_menu_items', $plugin_admin, 'menu_meta_box_filter', 10, 3 );
 
 	}
 
@@ -122,7 +127,7 @@ class Wp_Linfo_Job {
 	}
 
 	public function get_plugin_name() {
-		return $this->plugin_name;
+		return $this->name;
 	}
 
 	public function get_loader() {
