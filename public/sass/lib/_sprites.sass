@@ -1,0 +1,40 @@
+//  sprites with padding
+$icons: sprite-map("sprites/*.png", $spacing: 10px)
+// sized sprites
+=image-size($path)
+    width: image-width($path)
+    height: image-height($path)
+
+=sized-sprite($map, $sprite)
+    background: sprite($map, $sprite) no-repeat
+    +image-size(sprite-file($map, $sprite))
+
+//shortcut
+=s($sprite, $map: $icons)
+    background: sprite($map, $sprite)
+    //background-image: inline-image('icons/'+$sprite+'.png','image/png') to switches sprites to base64, elegant
+    +image-size(sprite-file($map, $sprite))
+
+//only image, when dimensions are useless
+=sp($sprite, $map: $icons)
+    background-position: sprite-position($map, $sprite)
+    //background: sprite($map, $sprite) no-repeat
+
+=list($sprite, $map: $icons)
+    list-style-image: sprite($map, $sprite) sprite-position($map, $sprite)
+
+// insert svg
+=svg($name, $width, $height)
+    background: url('../img/svg/#{$name}.svg') no-repeat 0 0
+    +background-size(#{$width}px #{$height}px)
+    // background-image: inline-image('svg/#{$name}.svg','image/svg')
+    width: #{$width}px
+    height: #{$height}px
+    display: inline-block
+
+=ss($sprite, $map: $icons)
+    +image-size(sprite-file($map, $sprite)) 
+
+=sb($map: $icons)
+    background: sprite-url($map) no-repeat
+        

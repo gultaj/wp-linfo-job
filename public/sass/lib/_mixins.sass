@@ -1,0 +1,20 @@
+=clr
+    &:after,&:before
+        content: " "
+        display: table
+        clear: both
+    *zoom: 1
+
+=make-icon-h($icon)
+    .icon-#{$icon}
+        +si(#{$icon})
+        &:hover
+            +si(#{$icon}-hover)
+
+=make-icon($icon)
+    .icon-#{$icon}
+        +si(#{$icon})
+
+=col($col: 1, $grid: 1)
+    @extend %col
+    width: percentage($col / $grid)

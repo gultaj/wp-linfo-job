@@ -22,35 +22,14 @@
  */
 class Wp_Linfo_Job_Public {
 
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
+	private $plugin;
+	public static $vacancy = 'job_vacancy';
+	public static $resume = 'job_resume';
 
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
+	public function __construct( $plugin ) {
 
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 * @var      string    $plugin_name       The name of the plugin.
-	 * @var      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->plugin = $plugin;
+		// $this->version = $version;
 
 	}
 
@@ -61,19 +40,7 @@ class Wp_Linfo_Job_Public {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Wp_Linfo_Job_Public_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Wp_Linfo_Job_Public_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/linfo-job-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'css/linfo-job.css', [], $this->plugin->get_version(), 'all' );
 
 	}
 
@@ -84,20 +51,56 @@ class Wp_Linfo_Job_Public {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Wp_Linfo_Job_Public_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Wp_Linfo_Job_Public_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/linfo-job-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'js/linfo-job-public.js', [ 'jquery' ], $this->plugin->get_version(), false );
 
 	}
+
+	public function template_include( $template ) {
+		$post_type = get_query_var('post_type');
+		$job = $this->plugin->job;
+    	if ( $post_type == $job->vacancy || $post_type == $job->resume ) {
+    		if ( is_single() ) {
+                return plugin_dir_path( __FILE__ ) . "partials/single-{$post_type}.php";
+            }
+            if ( is_archive() ) {
+                return plugin_dir_path( __FILE__ ) . "partials/archive-{$post_type}.php";
+            }
+    	}
+    	return $template;
+    }
+
+    public static function get_vacancies() {
+    	global $wpdb;
+    	$count_post = 10;
+        $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+        $posts =  get_posts([
+            'orderby'  => 'date',
+            'order' => 'DESC',
+            'post_type' => self::$vacancy,
+            'post_status' => 'publish',
+            'posts_per_archive_page' => $count_post,
+            'paged' => $paged,
+        ]);
+
+        $sql = "SELECT
+			post.post_date,
+			post.ID,
+			post.post_title,
+			post.post_name,
+			MAX(IF(meta.meta_key = 'company', meta.meta_value, NULL)) AS company,
+			MAX(IF(meta.meta_key = 'salary', meta.meta_value, NULL)) AS salary
+		FROM wp_posts post
+		INNER JOIN wp_postmeta meta
+			 ON post.ID = meta.post_id
+		WHERE
+			post.post_type = 'job_vacancy'
+			AND post.post_status = 'publish'
+			AND meta.meta_key = 'company'
+			OR meta.meta_key = 'salary'";
+
+        $posts = $wpdb->get_results( $sql );
+        
+        return $posts;
+    }
 
 }

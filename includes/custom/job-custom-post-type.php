@@ -23,7 +23,7 @@ class Job_Custom_Post_Types {
             'rewrite'            => ['slug' => $this->slug, 'with_front' => false],
             'supports'           => ['title'],
             'show_in_menu'       => 'edit.php?post_type=' . $this->vacancy,
-            'show_in_nav_menus'  => true,
+            'show_in_nav_menus'  => false,
             'public'             => true,
             'has_archive'        => true
         ];
