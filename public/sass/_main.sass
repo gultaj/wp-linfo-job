@@ -1,8 +1,25 @@
-.content-header h2
-	font-weight: 400 !important
+$base: #009ee7
 
+.content
+
+.content-header 
+	position: relative
+	h2
+		font-weight: 400 !important
+
+.vacancy__list_header
+	+clr
+	padding: 7px 0
+	background: #aaa
+	color: #fff
 .vacancy
-	@extend %row
+	display: block
+	+clr
+	padding: 7px 0
+	&:hover
+		background: #E1EFF5 !important
+	&:nth-child(odd)
+		background: #eee
 .vacancy__name
 	+col(2,5)
 .vacancy__company
@@ -10,3 +27,38 @@
 .vacancy__salary
 	+col(1,5)
 	text-align: right
+.vacancy__add_link
+	position: absolute
+	right: 10px
+	top: 5px
+	color: #fff
+	padding: 5px
+	border: 1px solid #fff
+	vertical-align: bottom
+	font-size: 14px 
+	border-radius: 2px
+	transition: all .2s
+	&:before
+		vertical-align: middle
+		margin-right: 5px
+	&:hover
+		text-decoration: none !important
+		background: #fff
+		color: $base
+.job__aside_links
+	padding-bottom: 3px
+	border-bottom: 1px solid #ddd
+	margin-bottom: 5px
+.job__pagination
+	text-align: center
+	border-top: 1px solid #ddd
+	margin-top: 5px
+
+.job__all_link
+	color: white
+	transition: all .2s
+	&:hover
+		text-decoration: none
+.resume__list_link
+	color: $base
+	font-size: 16px

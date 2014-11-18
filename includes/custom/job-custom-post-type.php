@@ -16,7 +16,7 @@ class Job_Custom_Post_Types {
                 'name'         => 'Вакансии',
                 'view_item'    => 'Просмотреть',
                 'add_new_item' => 'Новая вакансия',
-                'add_new'      => 'Добавить',
+                'add_new'      => 'Добавить вакансию',
                 'edit_item'    => 'Редактировать',
                 'update_item'  => 'Обновить',
             ],
@@ -32,6 +32,7 @@ class Job_Custom_Post_Types {
 
         $args['labels']['name'] = 'Резюме';
         $args['labels']['add_new_item'] = 'Новое резюме';
+        $args['labels']['add_new'] = 'Добавить резюме';
         $args['rewrite'] = ['slug' => $this->slug.'/resume', 'with_front' => false];
 
         register_post_type( $this->resume, $args );

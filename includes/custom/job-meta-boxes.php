@@ -49,6 +49,7 @@ class Job_Meta_Boxes {
 		foreach ($meta as $value) {
 			$$value = get_post_meta( $obj->ID, $value, true );
 		}
+		if (!is_array($contact)) $contact = ['address'=>'', 'phone'=>'', 'email'=>'', 'site'=>''];
 		$name = $this->plugin->job->vacancy;
 		require_once plugin_dir_path( __FILE__ ) . 'meta_partials/vacancy-meta-boxes.php';
 

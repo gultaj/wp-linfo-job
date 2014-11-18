@@ -102,6 +102,7 @@ class Wp_Linfo_Job {
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->public, 'enqueue_scripts' );
 		
 		$this->loader->add_filter( 'template_include', $this->public, 'template_include', 6 );
+		$this->loader->add_filter( 'pre_get_posts', $this->public, 'custom_posts_per_page' );
 
 	}
 
