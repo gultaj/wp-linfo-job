@@ -83,4 +83,8 @@ class Job_Meta_Boxes {
 			echo '<option value="'.$key.'"'.(($key == $selected) ? ' selected="selected">' : '>').$value.'</option>';
 		}
 	}
+
+	public static function get_elem( $name, $value ) {
+		return self::$$name[$value];
+	}
 }

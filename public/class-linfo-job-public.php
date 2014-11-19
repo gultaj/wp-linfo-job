@@ -1,25 +1,5 @@
 <?php
 
-/**
- * The public-facing functionality of the plugin.
- *
- * @link       http://example.com
- * @since      1.0.0
- *
- * @package    Wp_Linfo_Job
- * @subpackage Wp_Linfo_Job/public
- */
-
-/**
- * The public-facing functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the dashboard-specific stylesheet and JavaScript.
- *
- * @package    Wp_Linfo_Job
- * @subpackage Wp_Linfo_Job/public
- * @author     Your Name <email@example.com>
- */
 class Wp_Linfo_Job_Public {
 
 	private $plugin;
@@ -29,30 +9,17 @@ class Wp_Linfo_Job_Public {
 	public static $vacancy = 'job_vacancy';
 	public static $resume = 'job_resume';
 
-
 	public function __construct( $plugin ) {
-
 		$this->plugin = $plugin;
 		// $this->version = $version;
-
 	}
 
-	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
 	public function enqueue_styles() {
 
 		wp_enqueue_style( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'css/linfo-job.css', [], $this->plugin->get_version(), 'all' );
 
 	}
 
-	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
 	public function enqueue_scripts() {
 
 		wp_enqueue_script( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'js/linfo-job-public.js', [ 'jquery' ], $this->plugin->get_version(), false );
