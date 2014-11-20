@@ -9,15 +9,15 @@
             <div class="job__aside_links"><?= Wp_Linfo_Job_Public::get_archive_link('resume') ?></div>
             <div class="vacancy__list">
                 <div class="vacancy__list_header">
-                    <div class="vacancy__name">Вакансия</div>   
-                    <div class="vacancy__company">Организация</div>
-                    <div class="vacancy__salary">Оплата</div>    
+                    <div class="vacancy__list_name">Вакансия</div>   
+                    <div class="vacancy__list_company">Организация</div>
+                    <div class="vacancy__list_salary">Оплата</div>    
                 </div>
                 <?php foreach (Wp_Linfo_Job_Public::get_vacancies() as $vacancy) : ?>
-                <a href="<?= get_permalink( $vacancy->ID ) ?>" class="vacancy">
-                    <div class="vacancy__name"><?= $vacancy->post_title ?></div>   
-                    <div class="vacancy__company"><?= $vacancy->company ?></div>
-                    <div class="vacancy__salary"><?= $vacancy->salary ?></div>
+                <a href="<?= get_permalink( $vacancy->ID ) ?>" class="vacancy__item">
+                    <div class="vacancy__item_name"><?= $vacancy->post_title ?></div>   
+                    <div class="vacancy__item_company"><?= $vacancy->company ?></div>
+                    <div class="vacancy__item_salary"><?= $vacancy->salary ?></div>
                 </a>
                 <?php endforeach; ?>
             </div>

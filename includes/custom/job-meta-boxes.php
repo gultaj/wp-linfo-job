@@ -24,11 +24,17 @@ class Job_Meta_Boxes {
 	];
 	static $stage = [
 		'0' => 'не имеет значения',
-		'1' => 'нет опыта',
+		'1' => 'без опыта',
 		'2' => 'до 1 года',
 		'3' => 'от 1 года до 3 лет',
 		'4' => 'более 3 лет',
 	];
+	static $expire = [
+        "+1 week"  => "Неделя",
+        "+2 week"  => "Две недели",
+        "+1 month" => "Месяц",
+        "+3 month" => "Три месяца",
+    ];
 
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
@@ -49,7 +55,7 @@ class Job_Meta_Boxes {
 		foreach ($meta as $value) {
 			$$value = get_post_meta( $obj->ID, $value, true );
 		}
-		if (!is_array($contact)) $contact = ['address'=>'', 'phone'=>'', 'email'=>'', 'site'=>''];
+		if (!is_array($contact)) $contact = ['address'=>'', 'phone'=>'', 'email'=>'', 'site'=>'', 'name'=>''];
 		$name = $this->plugin->job->vacancy;
 		require_once plugin_dir_path( __FILE__ ) . 'meta_partials/vacancy-meta-boxes.php';
 
@@ -60,21 +66,36 @@ class Job_Meta_Boxes {
 	}
 
 	public function save_vacancy_meta_box( $obj_id, $data ) {
-
+		$sanitize = [
+			'intval' => ['shift', 'edu', 'type', 'stage'],
+			'htmlentities' => ['desc'],
+			'sanitize_text_field' => [
+				'company', 'salary',
+				'contact' => ['address', 'email', 'phone', 'site', 'name',]
+			],
+		];
+		$data = $this->sanitize_meta( $data, $sanitize );
 		foreach ($data as $key => $value) {
 			update_post_meta( $obj_id, $key, $value );
 		}
-
-	}
-
-	private function sanitize_vacancy_meta( $data ) {
-
 	}
 
 	public function save_resume_meta_box( $obj_id, $data ) {
 
 	}
 
+	private function sanitize_meta( $data, $rules ) {
+		foreach ($rules as $func => $fields) {
+			foreach ($fields as $name => $field) {
+				if (is_array($field)) {
+					$data[$name] = $this->sanitize_meta($data[$name], [$func => $field]);
+					continue;
+				}
+				$data[$field] = call_user_func_array($func, [$data[$field]]);
+			}
+		}
+		return $data;
+	}
 
 	/* Static helpers */
 
@@ -85,6 +106,7 @@ class Job_Meta_Boxes {
 	}
 
 	public static function get_elem( $name, $value ) {
-		return self::$$name[$value];
+		$arr = self::$$name;
+		return $arr[$value];
 	}
 }

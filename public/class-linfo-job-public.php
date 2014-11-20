@@ -30,6 +30,9 @@ class Wp_Linfo_Job_Public {
 		$post_type = get_query_var('post_type');
 		$job = $this->plugin->job;
     	if ( $post_type == $job->vacancy || $post_type == $job->resume ) {
+            if (isset($_GET['new'])) {
+                return plugin_dir_path( __FILE__ ) . "partials/new-{$post_type}.php";
+            }
     		if ( is_single() ) {
                 return plugin_dir_path( __FILE__ ) . "partials/single-{$post_type}.php";
             }
@@ -41,10 +44,9 @@ class Wp_Linfo_Job_Public {
     }
 
     public function custom_posts_per_page($query) {
-        if ( $query->query_vars['post_type'] == $this->plugin->job->vacancy) {
-                $query->query_vars['posts_per_page'] = self::$post_per_page;
+        if ( is_post_type_archive( $this->plugin->job->vacancy) ) {
+            $query->set('posts_per_page', self::$post_per_page);
         }
-        return $query;
     }
 
     public static function get_vacancies() {
@@ -73,7 +75,7 @@ class Wp_Linfo_Job_Public {
     	$sql = "SELECT meta_key, meta_value
 				FROM wp_postmeta meta
 				WHERE meta.post_id = {$id}
-				AND meta.meta_key NOT IN ('_edit_lock', '_edit_last')";
+				AND meta.meta_key NOT IN ('_edit_lock','_edit_last','_wp_old_slug')";
         $data = $wpdb->get_results( $sql );
         $meta = [];
         foreach ($data as $v) {
@@ -107,7 +109,7 @@ class Wp_Linfo_Job_Public {
         	<li><a href="<?= home_url() ?>">Главная</a></li>
         	<?php if ( is_single() ) : ?>
         		<li><a href="<?= home_url('/'.$obj->rewrite['slug'] ) ?>"><?= $obj->labels->name ?></a></li>
-        		<li class="active"><?php the_title()?></li>
+        		<li class="active"><?= trim_characters(get_the_title(), 100)?></li>
         	<?php else : ?>
         		<li class="active"><?= $obj->labels->name ?></li>
         	<?php endif; ?>
