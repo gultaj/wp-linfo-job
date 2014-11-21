@@ -48,6 +48,22 @@ class Job_Custom_Post_Types {
             do_action( 'save_'.$this->resume, $obj_id, $_POST[$this->resume] );
     }
 
+    public function create_vacancy() {
+        $vacancy = $_POST['vacancy'];
+        $args = [
+            'post_type' => $this->vacancy,
+            'post_title' => wp_strip_all_tags($vacancy['title']),
+            'post_status' => 'publish'
+        ];
+        $vacancy_id = wp_insert_post( $args );
+        wp_update_post( ['ID'=>$vacancy_id, 'post_name'=>'id'.$vacancy_id] );
+        unset($vacancy['title']);
+
+        do_action( 'save_'.$this->vacancy, $vacancy_id, $vacancy );
+        Wp_Job_Flash::setFlash('success', 'Поздравляю!');
+        return $vacancy_id;
+    }
+
     /**
      * Заменяте поле 'name' на 'id{id объекта}'
      */

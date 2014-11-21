@@ -1,21 +1,29 @@
-<?php ?>
 <table>
-	
+	<tr>
+		<td>Срок размещения&nbsp;</td>
+		<td>
+		<?php if ($current_screen->action == 'add') : ?>
+			<select name="<?= $name ?>[expiry]"><?php self::dropdown('expiry', key(self::$expiry)) ?></select></td>
+		<?php else : ?>
+			&nbsp;<strong> до <?= date('d.m.Y', $expiry) ?></strong>
+			<input type="hidden" name="<?= $name ?>[expiry]" value="<?= $expiry ?>">
+		<?php endif; ?>
+	</tr>
 	<tr>
 		<td>Образование</td>
-		<td><select name="<?= $name ?>[edu]" id=""><?php self::dropdown('education', $edu) ?></select></td>
+		<td><select name="<?= $name ?>[edu]"><?php self::dropdown('education', $edu) ?></select></td>
 	</tr>
 	<tr>
 		<td>Режим работы</td>
-		<td><select name="<?= $name ?>[shift]" id=""><?php self::dropdown('shift', $shift) ?></select></td>
+		<td><select name="<?= $name ?>[shift]"><?php self::dropdown('shift', $shift) ?></select></td>
 	</tr>
 	<tr>
 		<td>Вид работы</td>
-		<td><select name="<?= $name ?>[type]" id=""><?php self::dropdown('type', $type) ?></select></td>
+		<td><select name="<?= $name ?>[type]"><?php self::dropdown('type', $type) ?></select></td>
 	</tr>
 	<tr>
 		<td>Опыт</td>
-		<td><select name="<?= $name ?>[stage]" id=""><?php self::dropdown('stage', $stage) ?></select></td>
+		<td><select name="<?= $name ?>[stage]"><?php self::dropdown('stage', $stage) ?></select></td>
 	</tr>
 	<tr> <td>Зарплата</td> <td><input type="text" size="50" name="<?= $name ?>[salary]" value="<?= $salary ?>" /></td> </tr>
 

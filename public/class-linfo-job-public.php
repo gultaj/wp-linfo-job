@@ -30,6 +30,12 @@ class Wp_Linfo_Job_Public {
 		$post_type = get_query_var('post_type');
 		$job = $this->plugin->job;
     	if ( $post_type == $job->vacancy || $post_type == $job->resume ) {
+            if ( isset($_POST['vacancy']) && isset($_POST['create-vacancy-nonce']) ) {
+                if ( wp_verify_nonce( $_POST['create-vacancy-nonce'], 'create-vacancy' ) ) {
+                    $id = $this->plugin->job->create_vacancy();
+                    wp_safe_redirect( get_permalink( $id ) );
+                }
+            }
             if (isset($_GET['new'])) {
                 return plugin_dir_path( __FILE__ ) . "partials/new-{$post_type}.php";
             }
@@ -44,27 +50,28 @@ class Wp_Linfo_Job_Public {
     }
 
     public function custom_posts_per_page($query) {
-        if ( is_post_type_archive( $this->plugin->job->vacancy) ) {
+        if ( is_post_type_archive( $this->plugin->job->vacancy) && !is_admin() ) {
             $query->set('posts_per_page', self::$post_per_page);
         }
     }
 
     public static function get_vacancies() {
-    	global $wpdb;
-        $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-    	$offset = ($paged - 1) * self::$post_per_page;
-
+    	global $wpdb, $wp_query;
+        $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+        $post_per_page = self::$post_per_page;
+    	$offset = ($paged - 1) * $post_per_page;
         $sql = "SELECT post.post_date, post.ID, post.post_title, post.post_name,
-					MAX(IF(meta.meta_key = 'company', meta.meta_value, NULL)) AS company,
-					MAX(IF(meta.meta_key = 'salary', meta.meta_value, NULL)) AS salary
-				FROM wp_posts post INNER JOIN wp_postmeta meta ON post.ID = meta.post_id
-				WHERE post.post_type = 'job_vacancy'
-					AND post.post_status = 'publish'
-					AND meta.meta_key = 'company'
-					OR meta.meta_key = 'salary'
-				GROUP BY post.ID
-				ORDER BY post.post_title
-				LIMIT ". $offset .", ". self::$post_per_page;
+                        MAX(IF(meta.meta_key = 'company', meta.meta_value, NULL)) AS company,
+                        MAX(IF(meta.meta_key = 'salary', meta.meta_value, NULL)) AS salary
+                FROM wp_posts post 
+                INNER JOIN wp_postmeta AS meta ON post.ID = meta.post_id
+                WHERE post.post_type = '".self::$vacancy."'
+                    AND post.post_status = 'publish'
+                    AND (meta.meta_key = 'company' OR meta.meta_key = 'salary')
+                GROUP BY post.ID
+                ORDER BY post.post_title
+				LIMIT ". $offset .", ". $post_per_page;
+        
         $posts = $wpdb->get_results( $sql );
 
         return $posts;
@@ -87,7 +94,7 @@ class Wp_Linfo_Job_Public {
     public static function get_archive_link( $post_type ) {
     	$obj = get_post_type_object( self::$$post_type );
     	$link = '<a href="'. home_url('/'.$obj->rewrite['slug'] ).'" class="resume__list_link">';
-    	$link .= 'Посмотреть '.mb_strtolower($obj->labels->name, 'utf-8').'</a>';
+    	$link .= 'Посмотреть '.mb_strtolower($obj->label, 'utf-8').'</a>';
     	return $link;
     }
 
@@ -95,26 +102,39 @@ class Wp_Linfo_Job_Public {
     	<div class="col-xs-12">
     		<h2>
 			<?php if ( is_single() ) : ?>
-    			 <a class="job__all_link" href="<?= home_url('/'.$obj->rewrite['slug']) ?>"><?= $obj->labels->name ?> города Лиды &raquo;</a>
+    			 <a class="job__all_link" href="<?= home_url('/'.$obj->rewrite['slug']) ?>"><?= $obj->label ?> города Лиды &raquo;</a>
     		<?php else : ?>
-    			<?= $obj->labels->name ?> города Лиды
+    			<?= $obj->label ?> города Лиды
     		<?php endif; ?>
     		</h2>
     		<a class="icon-plus vacancy__add_link" href="<?= home_url('/'.$obj->rewrite['slug'].'?new' ); ?>"><?= $obj->labels->add_new ?></a>
     	</div>
     <?php }
 
-    public static function breadcrumbs( $obj) { ?>
+    public static function breadcrumbs( $obj ) { ?>
         <ol class="breadcrumb">
         	<li><a href="<?= home_url() ?>">Главная</a></li>
         	<?php if ( is_single() ) : ?>
-        		<li><a href="<?= home_url('/'.$obj->rewrite['slug'] ) ?>"><?= $obj->labels->name ?></a></li>
+        		<li><a href="<?= home_url('/'.$obj->rewrite['slug'] ) ?>"><?= $obj->label ?></a></li>
         		<li class="active"><?= trim_characters(get_the_title(), 100)?></li>
         	<?php else : ?>
-        		<li class="active"><?= $obj->labels->name ?></li>
+                <?php if (isset($_GET['new'])) : ?>
+                    <li><a href="<?= home_url('/'.$obj->rewrite['slug'] ) ?>"><?= $obj->label ?></a></li>
+                    <li class="active"><?= $obj->labels->add_new_item ?></li>
+                <?php else : ?>
+            		<li class="active"><?= $obj->label ?></li>
+                <?php endif; ?>
         	<?php endif; ?>
     	</ol>
     <?php
+    }
+
+    public static function flashmessages() {
+        if (Wp_Job_Flash::hasFlash()) {
+            foreach (Wp_Job_Flash::getFlashes() as $type => $message) {
+                echo '<div class="alert alert-'.$type.'" role="alert">'.$message.'</div>';
+            }
+        }
     }
 
 }

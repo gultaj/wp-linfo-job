@@ -30,7 +30,7 @@ class Wp_Linfo_Job_Install {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		wp_schedule_event( time(), 'daily', 'cron_linfo_job' );
 	}
 
 	/**

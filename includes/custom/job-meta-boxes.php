@@ -29,7 +29,7 @@ class Job_Meta_Boxes {
 		'3' => 'от 1 года до 3 лет',
 		'4' => 'более 3 лет',
 	];
-	static $expire = [
+	static $expiry = [
         "+1 week"  => "Неделя",
         "+2 week"  => "Две недели",
         "+1 month" => "Месяц",
@@ -51,7 +51,8 @@ class Job_Meta_Boxes {
 	}
 
 	public function vacancy_metabox( $obj ) {
-		$meta = ['desc', 'salary', 'edu', 'shift', 'stage', 'time', 'contact', 'company'];
+		global $current_screen;
+		$meta = ['desc', 'salary', 'edu', 'shift', 'stage', 'time', 'contact', 'company', 'expiry'];
 		foreach ($meta as $value) {
 			$$value = get_post_meta( $obj->ID, $value, true );
 		}
@@ -70,11 +71,12 @@ class Job_Meta_Boxes {
 			'intval' => ['shift', 'edu', 'type', 'stage'],
 			'htmlentities' => ['desc'],
 			'sanitize_text_field' => [
-				'company', 'salary',
+				'company', 'salary', 'expiry',
 				'contact' => ['address', 'email', 'phone', 'site', 'name',]
 			],
 		];
 		$data = $this->sanitize_meta( $data, $sanitize );
+		$data['expiry'] = strtotime($data['expiry'], time());
 		foreach ($data as $key => $value) {
 			update_post_meta( $obj_id, $key, $value );
 		}
@@ -96,6 +98,16 @@ class Job_Meta_Boxes {
 		}
 		return $data;
 	}
+
+	private function generatePassword($length = 6) {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $count = mb_strlen($chars);
+        for ($i = 0, $result = ''; $i < $length; $i++) {
+            $index = rand(0, $count - 1);
+            $result .= mb_substr($chars, $index, 1);
+        }
+        return $result;
+    }
 
 	/* Static helpers */
 

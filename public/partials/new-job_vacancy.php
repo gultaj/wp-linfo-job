@@ -56,7 +56,7 @@
 						<label for="expiry" class="col-sm-3 control-label">Срок размещения</label>
 						<div class="col-sm-4">
 							<select name="vacancy[expiry]" id="expiry" class="form-control">
-								<?php Job_Meta_Boxes::dropdown('expire', key(Job_Meta_Boxes::$expire)) ?>
+								<?php Job_Meta_Boxes::dropdown('expiry', key(Job_Meta_Boxes::$expiry)) ?>
 							</select>
 						</div>
 					</div>
@@ -65,13 +65,13 @@
 					<legend>Контактная информация</legend>
 					<div class="form-group">
 						<label for="company" class="col-sm-3 control-label">Организация</label>
-						<div class="col-sm-5">
+						<div class="col-sm-9">
 							<input type="text" size="50" name="vacancy[company]" class="form-control" id="company"  />
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="contact_address" class="col-sm-3 control-label">Адрес</label>
-						<div class="col-sm-5">
+						<div class="col-sm-9">
 							<input type="text" size="50" name="vacancy[contact][address]" class="form-control" id="contact_address" />
 						</div>
 					</div>
@@ -83,7 +83,7 @@
 					</div>
 					<div class="form-group">
 						<label for="contact_email" class="col-sm-3 control-label">E-mail</label>
-						<div class="col-sm-7">
+						<div class="col-sm-5">
 							<input type="text" name="vacancy[contact][email]" width="41%" class="form-control" id="contact_email" placeholder="Электронная почта">
 							<p class="help-block">На этот e-mail будет выслан код для редактирования вакансии.</p>
 							<input type="checkbox" name="vacancy[contact][show_email]"> отображать e-mail в вакансии

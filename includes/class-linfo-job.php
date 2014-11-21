@@ -61,6 +61,8 @@ class Wp_Linfo_Job {
 
 		require_once $this->path . 'public/class-linfo-job-public.php';
 
+		require_once $this->path . 'public/class-flashmessage.php';
+
 		require_once $this->path . 'includes/custom/job-custom-post-type.php';
 
 		require_once $this->path . 'includes/custom/job-meta-boxes.php';
@@ -91,7 +93,7 @@ class Wp_Linfo_Job {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_head-nav-menus.php', $plugin_admin, 'add_menu_meta_box' );
-
+		$this->loader->add_action( 'cron_linfo_job', $plugin_admin, 'clear_expired_objects' );
 	}
 
 	private function define_public_hooks() {

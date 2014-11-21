@@ -7,6 +7,7 @@
             <div><?php Wp_Linfo_Job_Public::breadcrumbs( $object ) ?></div>
             <div class="content-header row"> <?php Wp_Linfo_Job_Public::title( $object ) ?> </div>
             <div class="job__aside_links"><?= Wp_Linfo_Job_Public::get_archive_link('resume') ?></div>
+            <div class="job__flash"><?= Wp_Linfo_Job_Public::flashmessages() ?></div>
             <div class="vacancy__list">
                 <div class="vacancy__list_header">
                     <div class="vacancy__list_name">Вакансия</div>   
