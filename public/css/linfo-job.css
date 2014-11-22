@@ -29,13 +29,13 @@
 .resume__list_link { color: #009ee7; font-size: 16px; }
 
 .vacancy { font-size: 14px; }
-.vacancy > div { *zoom: 1; padding: 3px 0; }
+.vacancy > div { *zoom: 1; padding: 5px 0; }
 .vacancy > div:nth-child(odd) { background: #eee; }
 .vacancy > div:after, .vacancy > div:before { content: " "; display: table; clear: both; }
 .vacancy dt { width: 33.33333%; }
 .vacancy dd { width: 66.66667%; }
 
-.vacancy__title { padding: 5px 0; padding-left: 5px; border-left: 3px solid #009ee7; margin-bottom: 5px; }
+.vacancy__title { padding: 5px 0; padding-left: 10px; border-left: 3px solid #009ee7; margin-bottom: 5px; }
 
 .contact__header { font-size: 14px; font-weight: 600; border-bottom: 1px solid #ddd; }
 
