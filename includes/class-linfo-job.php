@@ -35,6 +35,7 @@ class Wp_Linfo_Job {
 
 	public $job;
 	public $public;
+	public $settings;
 
 	public function __construct() {
 
@@ -49,6 +50,7 @@ class Wp_Linfo_Job {
 
 		$this->define_custom_post_hooks();
 		$this->define_meta_boxes_hooks();
+		$this->define_settings_hooks();
 	}
 
 	private function load_dependencies() {
@@ -56,6 +58,8 @@ class Wp_Linfo_Job {
 		require_once $this->path . 'includes/class-linfo-job-loader.php';
 
 		require_once $this->path . 'includes/class-linfo-job-i18n.php';
+
+		require_once $this->path . 'includes/class-linfo-job-settings.php';
 
 		require_once $this->path . 'admin/class-linfo-job-admin.php';
 
@@ -73,6 +77,7 @@ class Wp_Linfo_Job {
 
 		$this->meta = new Job_Meta_Boxes( $this );
 
+		$this->settings = new Wp_Linfo_Job_Settings( $this );
 
 	}
 
@@ -94,6 +99,7 @@ class Wp_Linfo_Job {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_head-nav-menus.php', $plugin_admin, 'add_menu_meta_box' );
 		$this->loader->add_action( 'cron_linfo_job', $plugin_admin, 'clear_expired_objects' );
+		$this->loader->add_action( 'send_vacancy_key', $plugin_admin, 'send_vacancy_email' );
 	}
 
 	private function define_public_hooks() {
@@ -122,6 +128,13 @@ class Wp_Linfo_Job {
 		$this->loader->add_action( 'add_meta_boxes', $this->meta, 'create' );
 		$this->loader->add_action( 'save_'.$this->job->vacancy, $this->meta, 'save_vacancy_meta_box', 10, 2 );
 		$this->loader->add_action( 'save_'.$this->job->resume, $this->meta, 'save_resume_meta_box', 10, 2 );
+
+	}
+
+	public function define_settings_hooks() {
+
+		$this->loader->add_action( 'admin_menu', $this->settings, 'add_admin_menu' );
+		$this->loader->add_action( 'admin_init', $this->settings, 'register_settings' );
 
 	}
 

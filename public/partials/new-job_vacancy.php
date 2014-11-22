@@ -11,7 +11,7 @@
 				<fieldset>
 					<legend>Вакансия</legend>
 					<div class="form-group">
-						<label for="title" class="col-sm-3 control-label">Должность</label>
+						<label for="title" class="col-sm-3 control-label text-danger">Должность</label>
 						<div class="col-sm-9">
 							<input type="text" name="vacancy[title]" class="form-control" id="title" placeholder="Должность">
 						</div>
@@ -41,7 +41,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="salary" class="col-sm-3 control-label">Оплата</label>
+						<label for="salary" class="col-sm-3 control-label text-danger">Оплата</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" size="50" name="vacancy[salary]" id="salary">
 						</div>
@@ -64,7 +64,7 @@
 				<fieldset>
 					<legend>Контактная информация</legend>
 					<div class="form-group">
-						<label for="company" class="col-sm-3 control-label">Организация</label>
+						<label for="company" class="col-sm-3 control-label text-danger">Организация</label>
 						<div class="col-sm-9">
 							<input type="text" size="50" name="vacancy[company]" class="form-control" id="company"  />
 						</div>

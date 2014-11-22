@@ -74,12 +74,16 @@ class Job_Meta_Boxes {
 				'company', 'salary', 'expiry',
 				'contact' => ['address', 'email', 'phone', 'site', 'name',]
 			],
+			'sanitize_email' => ['email'],
 		];
 		$data = $this->sanitize_meta( $data, $sanitize );
 		$data['expiry'] = strtotime($data['expiry'], time());
+		$data['key'] = $this->generate_password();
 		foreach ($data as $key => $value) {
 			update_post_meta( $obj_id, $key, $value );
 		}
+		if ( is_email( $data['contact']['email'] ))
+			do_action( 'send_vacancy_key', $data['contact']['email'], $data['key'] );
 	}
 
 	public function save_resume_meta_box( $obj_id, $data ) {
@@ -99,7 +103,7 @@ class Job_Meta_Boxes {
 		return $data;
 	}
 
-	private function generatePassword($length = 6) {
+	private function generate_password($length = 6) {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $count = mb_strlen($chars);
         for ($i = 0, $result = ''; $i < $length; $i++) {
