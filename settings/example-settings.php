@@ -22,8 +22,13 @@ function wpsf_example_settings( $wpsf_settings ) {
             [
                 'id' => 'posts_per_page',
                 'title' => 'Количество вакансий на странице',
-                'type' => 'text',
+                'type' => 'number',
                 'std' => 10
+            ],
+            [
+            	'id' => 'email',
+            	'title' => 'E-mail',
+            	'type' => 'textarea',
             ]
         ]
     ];

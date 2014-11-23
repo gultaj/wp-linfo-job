@@ -177,15 +177,13 @@ if( !class_exists('WordPressSettingsFramework') ){
          */
     	public function generate_setting( $args )
     	{  
-
     	    $section = $args['section'];
         	$this->setting_defaults = apply_filters( 'wpsf_defaults', $this->setting_defaults );
         	extract( wp_parse_args( $args['field'], $this->setting_defaults ) );
-
+            
         	$options = get_option( $this->option_group .'_settings' );
         	$el_id = $this->option_group .'_'. $section['section_id'] .'_'. $id;
         	$val = (isset($options[$el_id])) ? $options[$el_id] : $std;
-            var_dump($options);
         	do_action( 'wpsf_before_field' );
         	do_action( 'wpsf_before_field_'. $el_id );
     		switch( $type ){
@@ -194,6 +192,11 @@ if( !class_exists('WordPressSettingsFramework') ){
     		        echo '<input type="text" name="'. $this->option_group .'_settings['. $el_id .']" id="'. $el_id .'" value="'. $val .'" placeholder="'. $placeholder .'" class="regular-text '. $class .'" />';
     		        if($desc)  echo '<p class="description">'. $desc .'</p>';
     		        break;
+                case 'number':
+                    $val = esc_attr(stripslashes($val));
+                    echo '<input type="number" name="'. $this->option_group .'_settings['. $el_id .']" id="'. $el_id .'" value="'. $val .'" placeholder="'. $placeholder .'" class="small-text '. $class .'" />';
+                    if($desc)  echo '<p class="description">'. $desc .'</p>';
+                    break;
                 case 'password':
                     $val = esc_attr(stripslashes($val));
                     echo '<input type="password" name="'. $this->option_group .'_settings['. $el_id .']" id="'. $el_id .'" value="'. $val .'" placeholder="'. $placeholder .'" class="regular-text '. $class .'" />';
@@ -301,10 +304,8 @@ if( !class_exists('WordPressSettingsFramework') ){
             <form action="options.php" method="post">
                 <?php do_action( 'wpsf_before_settings_fields' ); ?>
                 <?php settings_fields( $this->option_group ); ?>
-        		<?php do_settings_sections( $this->option_group ); ?>
-<!--                 <p class="submit"><input type="submit" class="button-primary" value="<?php _e( 'Save Changes' ); ?>" /></p>
-             -->			
-             <?php submit_button() ?>
+        		<?php do_settings_sections( $this->option_group ); ?>		
+                <?php submit_button() ?>
              </form>
     		<?php
     		do_action( 'wpsf_after_settings' );
