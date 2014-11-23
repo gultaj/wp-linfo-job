@@ -71,14 +71,16 @@ class Wp_Linfo_Job {
 
 		require_once $this->path . 'includes/custom/job-meta-boxes.php';
 
+		require_once $this->path . 'includes/custom/wp-settings-framework.php';
+
 		$this->loader = new Wp_Linfo_Job_Loader();
 
 		$this->job = new Job_Custom_Post_Types( $this );
 
 		$this->meta = new Job_Meta_Boxes( $this );
 
+		//$this->settings = new WordPressSettingsFramework( $this->path .'custom/settings/example-settings.php', 'prefix_settings_general' );
 		$this->settings = new Wp_Linfo_Job_Settings( $this );
-
 	}
 
 	private function set_locale() {
@@ -133,8 +135,10 @@ class Wp_Linfo_Job {
 
 	public function define_settings_hooks() {
 
+		//$settings = new Wp_Linfo_Job_Settings( $this );
+
 		$this->loader->add_action( 'admin_menu', $this->settings, 'add_admin_menu' );
-		$this->loader->add_action( 'admin_init', $this->settings, 'register_settings' );
+		//$this->loader->add_action( 'admin_init', $this->settings, 'register_settings' );*/
 
 	}
 

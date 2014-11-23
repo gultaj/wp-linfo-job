@@ -57,6 +57,7 @@ if( !class_exists('WordPressSettingsFramework') ){
 
             $this->settings = array();
             $this->settings = apply_filters( 'wpsf_register_settings', $this->settings );
+            //my_log_file($this->settings);
             if( !is_array($this->settings) ){
                 return new WP_Error( 'broke', __( 'WPSF settings must be an array' ) );
             }
@@ -175,7 +176,8 @@ if( !class_exists('WordPressSettingsFramework') ){
          * @param array callback args from add_settings_field()
          */
     	public function generate_setting( $args )
-    	{
+    	{  
+
     	    $section = $args['section'];
         	$this->setting_defaults = apply_filters( 'wpsf_defaults', $this->setting_defaults );
         	extract( wp_parse_args( $args['field'], $this->setting_defaults ) );
@@ -183,7 +185,7 @@ if( !class_exists('WordPressSettingsFramework') ){
         	$options = get_option( $this->option_group .'_settings' );
         	$el_id = $this->option_group .'_'. $section['section_id'] .'_'. $id;
         	$val = (isset($options[$el_id])) ? $options[$el_id] : $std;
-
+            var_dump($options);
         	do_action( 'wpsf_before_field' );
         	do_action( 'wpsf_before_field_'. $el_id );
     		switch( $type ){
@@ -300,8 +302,10 @@ if( !class_exists('WordPressSettingsFramework') ){
                 <?php do_action( 'wpsf_before_settings_fields' ); ?>
                 <?php settings_fields( $this->option_group ); ?>
         		<?php do_settings_sections( $this->option_group ); ?>
-        		<p class="submit"><input type="submit" class="button-primary" value="<?php _e( 'Save Changes' ); ?>" /></p>
-			</form>
+<!--                 <p class="submit"><input type="submit" class="button-primary" value="<?php _e( 'Save Changes' ); ?>" /></p>
+             -->			
+             <?php submit_button() ?>
+             </form>
     		<?php
     		do_action( 'wpsf_after_settings' );
         }
