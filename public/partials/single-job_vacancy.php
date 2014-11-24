@@ -8,7 +8,14 @@
         <div id="content" class="col-xs-12" role="main">
             <div><?php Wp_Linfo_Job_Public::breadcrumbs( $post_type ) ?></div>
             <div class="content-header row"> <?php Wp_Linfo_Job_Public::title( $post_type ) ?> </div>
-            <div class="job__aside_links"><?= Wp_Linfo_Job_Public::get_archive_link('resume') ?></div>
+            <div class="job__aside_links">
+                <?= Wp_Linfo_Job_Public::get_archive_link('resume') ?>
+                <a href class="delete-vacancy icon-cancel" title="Удалить вакансию"></a>
+                <div class="job__delete_box">
+                    <span>Для удаления введите ключ</span>
+                    <input class="user_key" type="text" name="user_key">
+                </div>
+            </div>
             <div class="job__flash"><?= Wp_Linfo_Job_Public::flashmessages() ?></div>
             <h3 class="vacancy__title"><?= $object->post_title ?></h3>
             <div class="vacancy">

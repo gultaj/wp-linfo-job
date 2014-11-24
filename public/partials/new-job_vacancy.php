@@ -11,9 +11,9 @@
 				<fieldset>
 					<legend>Вакансия</legend>
 					<div class="form-group">
-						<label for="title" class="col-sm-3 control-label text-danger">Должность</label>
+						<label for="title" class="col-sm-3 control-label">Должность<span class="text-danger">*</span></label>
 						<div class="col-sm-9">
-							<input type="text" name="vacancy[title]" class="form-control" id="title" placeholder="Должность">
+							<input type="text" name="vacancy[title]" class="form-control" id="title" placeholder="Должность" require>
 						</div>
 					</div>
 					<div class="form-group">
@@ -41,9 +41,9 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="salary" class="col-sm-3 control-label text-danger">Оплата</label>
+						<label for="salary" class="col-sm-3 control-label">Оплата<span class="text-danger">*</span></label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" size="50" name="vacancy[salary]" id="salary">
+							<input type="text" class="form-control" size="50" name="vacancy[salary]" id="salary" require>
 						</div>
 					</div>
 					<div class="form-group">
@@ -64,9 +64,9 @@
 				<fieldset>
 					<legend>Контактная информация</legend>
 					<div class="form-group">
-						<label for="company" class="col-sm-3 control-label text-danger">Организация</label>
+						<label for="company" class="col-sm-3 control-label">Организация<span class="text-danger">*</span></label>
 						<div class="col-sm-9">
-							<input type="text" size="50" name="vacancy[company]" class="form-control" id="company"  />
+							<input type="text" size="50" name="vacancy[company]" class="form-control" id="company" require />
 						</div>
 					</div>
 					<div class="form-group">
@@ -84,7 +84,7 @@
 					<div class="form-group">
 						<label for="contact_email" class="col-sm-3 control-label">E-mail</label>
 						<div class="col-sm-5">
-							<input type="text" name="vacancy[contact][email]" width="41%" class="form-control" id="contact_email" placeholder="Электронная почта">
+							<input type="text" name="vacancy[contact][email]" size="50" class="form-control" id="contact_email" placeholder="Электронная почта">
 							<p class="help-block">На этот e-mail будет выслан код для редактирования вакансии.</p>
 							<input type="checkbox" name="vacancy[contact][show_email]"> отображать e-mail в вакансии
 						</div>
@@ -105,8 +105,9 @@
 
 				<fieldset><legend></legend>
 					<div class="form-group">
+						<p class="require_fields"><span class="text-danger">*</span> - поля обязательные для заполнения</p>
 						<div class="col-sm-offset-3 col-sm-9">
-							<button type="submit" id="send" class="btn btn-primary">Отправить</button>
+							<button type="submit" id="send-vacancy" class="btn btn-primary">Отправить</button>
 							<button type="submit" name="cancel" value="<?= @$_SERVER['HTTP_REFERER']; ?>" class="btn btn-default">Отмена</button>
 						</div>
 					</div>

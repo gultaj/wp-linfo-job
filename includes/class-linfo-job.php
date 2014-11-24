@@ -51,6 +51,7 @@ class Wp_Linfo_Job {
 		$this->define_custom_post_hooks();
 		$this->define_meta_boxes_hooks();
 		$this->define_settings_hooks();
+		$this->define_ajax_hooks();
 	}
 
 	private function load_dependencies() {
@@ -60,6 +61,10 @@ class Wp_Linfo_Job {
 		require_once $this->path . 'includes/class-linfo-job-i18n.php';
 
 		require_once $this->path . 'includes/class-linfo-job-settings.php';
+
+		require_once $this->path . 'includes/class-linfo-job-ajax.php';
+
+		require_once $this->path . 'includes/custom/wp-settings-framework.php';
 
 		require_once $this->path . 'admin/class-linfo-job-admin.php';
 
@@ -71,15 +76,12 @@ class Wp_Linfo_Job {
 
 		require_once $this->path . 'includes/custom/job-meta-boxes.php';
 
-		require_once $this->path . 'includes/custom/wp-settings-framework.php';
-
 		$this->loader = new Wp_Linfo_Job_Loader();
 
 		$this->job = new Job_Custom_Post_Types( $this );
 
 		$this->meta = new Job_Meta_Boxes( $this );
 
-		//$this->settings = new WordPressSettingsFramework( $this->path .'custom/settings/example-settings.php', 'prefix_settings_general' );
 		$this->settings = new Wp_Linfo_Job_Settings( $this );
 	}
 
@@ -135,11 +137,16 @@ class Wp_Linfo_Job {
 
 	public function define_settings_hooks() {
 
-		//$settings = new Wp_Linfo_Job_Settings( $this );
-
 		$this->loader->add_action( 'admin_menu', $this->settings, 'add_admin_menu' );
 		//$this->loader->add_action( 'admin_init', $this->settings, 'register_settings' );*/
 
+	}
+
+	public function define_ajax_hooks() {
+
+		$ajax = new Wp_Linfo_Job_Ajax( $this );
+		$this->loader->add_action( 'wp_ajax_check_key', $ajax, 'check_user_key' );
+        $this->loader->add_action( 'wp_ajax_nopriv_check_key', $ajax, 'check_user_key' );
 	}
 
 	public function run() {

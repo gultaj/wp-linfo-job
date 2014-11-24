@@ -74,7 +74,7 @@ class Job_Meta_Boxes {
 				'company', 'salary', 'expiry',
 				'contact' => ['address', 'email', 'phone', 'site', 'name',]
 			],
-			'sanitize_email' => ['email'],
+			'sanitize_email' => ['contact' => ['email']],
 		];
 		$data = $this->sanitize_meta( $data, $sanitize );
 		$data['expiry'] = strtotime($data['expiry'], time());
@@ -84,10 +84,15 @@ class Job_Meta_Boxes {
 		}
 		if ( is_email( $data['contact']['email'] ))
 			do_action( 'send_vacancy_key', $data['contact']['email'], $data['key'] );
+		return $data['key'];
 	}
 
 	public function save_resume_meta_box( $obj_id, $data ) {
 
+	}
+
+	public function validate_vacancy( $data ) {
+		//if ($data[''])
 	}
 
 	private function sanitize_meta( $data, $rules ) {

@@ -50,6 +50,7 @@ class Job_Custom_Post_Types {
 
     public function create_vacancy() {
         $vacancy = $_POST['vacancy'];
+        if (strlen(trim($vacancy['title'])) == 0) return false;
         $args = [
             'post_type' => $this->vacancy,
             'post_title' => wp_strip_all_tags($vacancy['title']),
@@ -60,7 +61,11 @@ class Job_Custom_Post_Types {
         unset($vacancy['title']);
 
         do_action( 'save_'.$this->vacancy, $vacancy_id, $vacancy );
-        Wp_Job_Flash::setFlash('success', 'Поздравляю!');
+
+        $key = Wp_Linfo_Job_Public::get_key( $vacancy_id );
+        $message = wpsf_get_setting('linfo_job', 'vacancy_settings', 'email');
+        $message = preg_replace('/%key%/ui', $key, nl2br($message));
+        Wp_Job_Flash::setFlash('success', $message);
         return $vacancy_id;
     }
 

@@ -11,18 +11,19 @@ class Wp_Linfo_Job_Public {
 
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
+        self::$post_per_page = wpsf_get_setting('linfo_job', 'vacancy_settings', 'posts_per_page');
 		// $this->version = $version;
 	}
 
 	public function enqueue_styles() {
-
-		wp_enqueue_style( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'css/linfo-job.css', [], $this->plugin->get_version(), 'all' );
+        if ( get_query_var( 'post_type' ) == $this->plugin->job->vacancy )
+		  wp_enqueue_style( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'css/linfo-job.css', [], $this->plugin->get_version(), 'all' );
 
 	}
 
 	public function enqueue_scripts() {
-
-		wp_enqueue_script( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'js/linfo-job-public.js', [ 'jquery' ], $this->plugin->get_version(), false );
+        if ( get_query_var( 'post_type' ) == $this->plugin->job->vacancy )
+    		wp_enqueue_script( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'js/linfo-job-public.js', [ 'jquery' ], $this->plugin->get_version(), false );
 
 	}
 
@@ -32,8 +33,9 @@ class Wp_Linfo_Job_Public {
     	if ( $post_type == $job->vacancy || $post_type == $job->resume ) {
             if ( isset($_POST['vacancy']) && isset($_POST['create-vacancy-nonce']) ) {
                 if ( wp_verify_nonce( $_POST['create-vacancy-nonce'], 'create-vacancy' ) ) {
-                    $id = $this->plugin->job->create_vacancy();
-                    wp_safe_redirect( get_permalink( $id ) );
+                    if ($id = $this->plugin->job->create_vacancy()) {
+                        wp_safe_redirect( get_permalink( $id ) );
+                    }
                 }
             }
             if (isset($_GET['new'])) {
@@ -92,10 +94,21 @@ class Wp_Linfo_Job_Public {
     }
 
     public static function get_archive_link( $post_type ) {
+        global $wpdb;
     	$obj = get_post_type_object( self::$$post_type );
     	$link = '<a href="'. home_url('/'.$obj->rewrite['slug'] ).'" class="resume__list_link">';
     	$link .= 'Посмотреть '.mb_strtolower($obj->label, 'utf-8').'</a>';
     	return $link;
+    }
+
+    public static function get_key( $obj_id ) {
+        global $wpdb;
+        $sql = "SELECT meta_value
+                FROM wp_postmeta
+                WHERE post_id = '{$obj_id}'
+                AND meta_key = 'key'";
+        $key = $wpdb->get_row( $sql );
+        return $key->meta_value;
     }
 
     public static function title( $obj ) { ?>

@@ -281,7 +281,8 @@ if( !class_exists('WordPressSettingsFramework') ){
                     </script>';
                     break;
                 case 'editor':
-    		        wp_editor( $val, $el_id, array( 'textarea_name' => $this->option_group .'_settings['. $el_id .']' ) );
+    		        wp_editor( $val, $el_id, array( 'textarea_name' => $this->option_group .'_settings['. $el_id .']', 'media_buttons' => false,
+                    'textarea_rows' => 8 ) );
     		        if($desc)  echo '<p class="description">'. $desc .'</p>';
     		        break;
     		    case 'custom':
