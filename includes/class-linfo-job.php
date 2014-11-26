@@ -124,6 +124,7 @@ class Wp_Linfo_Job {
 		$this->loader->add_action( 'save_post_'.$this->job->vacancy, $this->job, 'save', 10, 2 );
 		$this->loader->add_action( 'save_post_'.$this->job->resume, $this->job, 'save', 10, 2 );
 		$this->loader->add_action( 'wp_insert_post_data', $this->job, 'before_save', 10, 2 );
+		$this->loader->add_action( 'remove_job_vacancy', $this->job, 'remove_vacancy' );
 
 	}
 
@@ -145,8 +146,10 @@ class Wp_Linfo_Job {
 	public function define_ajax_hooks() {
 
 		$ajax = new Wp_Linfo_Job_Ajax( $this );
-		$this->loader->add_action( 'wp_ajax_check_key', $ajax, 'check_user_key' );
-        $this->loader->add_action( 'wp_ajax_nopriv_check_key', $ajax, 'check_user_key' );
+		$this->loader->add_action( 'wp_ajax_check_vacancy_key', $ajax, 'check_user_key' );
+        $this->loader->add_action( 'wp_ajax_nopriv_check_vacancy_key', $ajax, 'check_user_key' );
+        $this->loader->add_action( 'wp_ajax_remove_job_vacancy', $ajax, 'remove_job_vacancy' );
+        $this->loader->add_action( 'wp_ajax_nopriv_remove_job_vacancy', $ajax, 'remove_job_vacancy' );
 	}
 
 	public function run() {

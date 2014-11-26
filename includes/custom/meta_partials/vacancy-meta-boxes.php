@@ -18,7 +18,7 @@
 		<td><select name="<?= $name ?>[shift]"><?php self::dropdown('shift', $shift) ?></select></td>
 	</tr>
 	<tr>
-		<td>Вид работы</td>
+		<td>Занятость</td>
 		<td><select name="<?= $name ?>[type]"><?php self::dropdown('type', $type) ?></select></td>
 	</tr>
 	<tr>

@@ -11,7 +11,7 @@
 				<fieldset>
 					<legend>Вакансия</legend>
 					<div class="form-group">
-						<label for="title" class="col-sm-3 control-label">Должность<span class="text-danger">*</span></label>
+						<label for="title" class="col-sm-3 control-label">Должность <span class="text-danger">*</span></label>
 						<div class="col-sm-9">
 							<input type="text" name="vacancy[title]" class="form-control" id="title" placeholder="Должность" require>
 						</div>
@@ -29,7 +29,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="type" class="col-sm-3 control-label">Вид работы</label>
+						<label for="type" class="col-sm-3 control-label">Занятость</label>
 						<div class="col-sm-4">
 							<select name="vacancy[type]" class="form-control" id="type"><?php Job_Meta_Boxes::dropdown('type') ?></select>
 						</div>
@@ -41,7 +41,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="salary" class="col-sm-3 control-label">Оплата<span class="text-danger">*</span></label>
+						<label for="salary" class="col-sm-3 control-label">Оплата <span class="text-danger">*</span></label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" size="50" name="vacancy[salary]" id="salary" require>
 						</div>
@@ -64,7 +64,7 @@
 				<fieldset>
 					<legend>Контактная информация</legend>
 					<div class="form-group">
-						<label for="company" class="col-sm-3 control-label">Организация<span class="text-danger">*</span></label>
+						<label for="company" class="col-sm-3 control-label">Организация <span class="text-danger">*</span></label>
 						<div class="col-sm-9">
 							<input type="text" size="50" name="vacancy[company]" class="form-control" id="company" require />
 						</div>

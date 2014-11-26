@@ -69,6 +69,12 @@ class Job_Custom_Post_Types {
         return $vacancy_id;
     }
 
+    public function remove_vacancy( $id ) {
+        if (wp_delete_post( $id, true )) {
+            Wp_Job_Flash::setFlash('success', '<strong>Ваша вакансия удалена!</strong>');
+        }
+    }
+
     /**
      * Заменяте поле 'name' на 'id{id объекта}'
      */

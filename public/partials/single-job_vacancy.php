@@ -10,21 +10,17 @@
             <div class="content-header row"> <?php Wp_Linfo_Job_Public::title( $post_type ) ?> </div>
             <div class="job__aside_links">
                 <?= Wp_Linfo_Job_Public::get_archive_link('resume') ?>
-                <a href class="delete-vacancy icon-cancel" title="Удалить вакансию"></a>
-                <div class="job__delete_box">
-                    <span>Для удаления введите ключ</span>
-                    <input class="user_key" type="text" name="user_key">
-                </div>
+                <button type="button" class="vacancy__remove icon-cancel" title="Для удаления введите ключ"></button>
             </div>
             <div class="job__flash"><?= Wp_Linfo_Job_Public::flashmessages() ?></div>
             <h3 class="vacancy__title"><?= $object->post_title ?></h3>
+            <input type="hidden" name="vacancy_id" id="vacancy_id" value="<?= $object->ID ?>">
             <div class="vacancy">
                 <div class="vacancy__salary">
-                    <dt>Оплата</dt>
-                    <dd><?= $meta['salary'] ?></dd>
+                    <dt>Оплата</dt> <dd><?= $meta['salary'] ?></dd>
                 </div>
                 <div class="vacancy__type">
-                    <dt>Вид работы</dt>
+                    <dt>Занятость</dt>
                     <dd><?= Job_Meta_Boxes::get_elem('type', $meta['type']) ?></dd>
                 </div>
                 <div class="vacancy__shift">
@@ -41,8 +37,7 @@
                 </div>
                 <?php if (!empty($meta['desc'])) : ?>
                 <div class="vacancy__desc">
-                    <dt>Дополнительно</dt>
-                    <dd><?= nl2br($meta['desc']) ?></dd>
+                    <dt>Дополнительно</dt> <dd><?= nl2br($meta['desc']) ?></dd>
                 </div>
                 <?php endif ?>
             </div>
@@ -54,35 +49,31 @@
             </div>
             <?php if (!empty($meta['contact']['address'])) : ?>
                 <div class="company__address">
-                    <dt>Адрес</dt>
-                    <dd><?= $meta['contact']['address'] ?></dd>
+                    <dt>Адрес</dt> <dd><?= $meta['contact']['address'] ?></dd>
                 </div>
             <?php endif ?>
             <?php if (!empty($meta['contact']['phone'])) : ?>
                 <div class="company__phone">
-                    <dt>Телефон</dt>
-                    <dd><?= $meta['contact']['phone'] ?></dd>
+                    <dt>Телефон</dt> <dd><?= $meta['contact']['phone'] ?></dd>
                 </div>
             <?php endif ?>
             <?php if (!empty($meta['contact']['email'])) : ?>
                 <div class="company__email">
-                    <dt>E-mail</dt>
-                    <dd><?= $meta['contact']['email'] ?></dd>
+                    <dt>E-mail</dt> <dd><?= $meta['contact']['email'] ?></dd>
                 </div>
             <?php endif ?>
             <?php if (!empty($meta['contact']['site'])) : ?>
                 <div class="company__site">
-                    <dt>Сайт</dt>
-                    <dd><?= $meta['contact']['site'] ?></dd>
+                    <dt>Сайт</dt> <dd><?= $meta['contact']['site'] ?></dd>
                 </div>
             <?php endif ?>
             <?php if (!empty($meta['contact']['name'])) : ?>
                 <div class="contact__name">
-                    <dt>Контактное лицо</dt>
-                    <dd><?= $meta['contact']['name'] ?></dd>
+                    <dt>Контактное лицо</dt> <dd><?= $meta['contact']['name'] ?></dd>
                 </div>
             <?php endif ?>
         </div>
+        <div class="yashare-auto-init job__share"  data-yashareL10n="ru" data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" data-yashareType="small"></div>
     </div>
     </div>
 </div>

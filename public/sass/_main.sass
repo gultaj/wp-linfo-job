@@ -45,6 +45,9 @@ $base: #009ee7
 	&:before
 		vertical-align: middle
 		margin-right: 5px
+	&:focus
+		color: white
+		text-decoration: none
 	&:hover
 		text-decoration: none !important
 		background: #fff
@@ -104,22 +107,28 @@ $base: #009ee7
 		padding-top: 5px
 	.btn
 		border-radius: 2px
-.job__delete_box
-	float: right
-	display: none
-	transition: all .5s
-	&.active
-		display: block
-.delete-vacancy
+.vacancy__remove
 	float: right
 	background: none
 	border: 0
 	line-height: 22px
 	color: #ddd
-	&:hover
+	&:hover, &:focus
 		color: red
 		text-decoration: none
-.user_key
-	border: 1px solid #ddd
 	&:focus
 		outline: none
+.popover
+	border-radius: 2px !important
+	.popover-content
+		padding: 7px !important
+	.popover-title
+		padding: 5px 7px !important
+		font-size: 10px
+	.input-group .form-control
+		height: 22px
+	.input-group-btn button
+		padding: 2px 8px
+.job__share
+	text-align: right
+	margin-top: 10px

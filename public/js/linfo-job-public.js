@@ -1,33 +1,9 @@
 jQuery(document).ready(function( $ ) {
 	'use strict';
-	$('body').on('focusin', '.user_key', function() {
-		$(this).parent().addClass('active');
-	}).on('focusout', '.user_key', function() {
-		$(this).parent().removeClass('active')
-	});
+	$('body').on('click', '#check_key', checkKey);
 
-	$('.delete-vacancy').click(function() {
-		var input = $('.job__delete_box>input');
-		if ($.trim(input.val()).length == 6) {
-			var data = {
-				action: 'check_key',
-				vacancy_id: '',
-				user_key: ''
-			};
-			$.post(ajax_object.ajax_url, data, function(response) {
-				if (response == 'OK') {
-					var span = $(document.createElement('span')).text('На e-mail указанный при регистрации выслан новый ключ').css("font-size","12px").hide();
-					$("#popover-group").slideToggle("fast");
-					$(".popover-title").text('');
-					$(".popover-content").append(span);	
-					span.slideToggle("fast");
-				}
-			});
-		}
-		.focusin();
-
-		return false;
-	});
+	var html = '<div id="popover-group"><div class="input-group"><input type="text" id="edit_key" class="form-control input-sm"><span class="input-group-btn"><button class="btn btn-default btn-sm" id="check_key" type="button"> &raquo; </button></span></div>';
+	$('.vacancy__remove').popover({html: true, content: html, placement: 'bottom'});
 
 	$('#send-vacancy').click(function() {
 		var errors;
@@ -39,6 +15,35 @@ jQuery(document).ready(function( $ ) {
 			return false;
 		}
 	});
+
+	function checkKey() {
+		var key = $.trim($('#edit_key').val());
+		if (key.length == 6) {
+			var data = {action: 'check_vacancy_key', vacancy_id: $('#vacancy_id').val(), user_key: key };
+			$('#edit_key').parent().removeClass('has-error');
+			$('#edit_key, #check_key').attr('disabled', true);
+			$.post(ajax_object.ajax_url, data, function(response) {
+				if (response === 'OK') {
+					if (confirm('Вы действительно хотите удалить вакансию?')) {
+						data.action = 'remove_job_vacancy';
+						$.post(ajax_object.ajax_url, data, function(response) {
+							if (response === 'OK') {
+								var url = window.location.origin + window.location.pathname.replace(/id[0-9]+\//gi, '');
+								window.location.replace(url);
+							}
+						});
+					} else {
+						$('#edit_key, #check_key').attr('disabled', false);	
+					}
+				} else {
+					$('#edit_key, #check_key').attr('disabled', false);
+				}
+			});
+		} else {
+			$('#edit_key').parent().addClass('has-error');
+		}
+		return false;
+	}
 
 	function hasErrors() {
 		var errors = [];

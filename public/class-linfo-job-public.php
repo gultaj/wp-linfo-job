@@ -12,6 +12,8 @@ class Wp_Linfo_Job_Public {
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
         self::$post_per_page = wpsf_get_setting('linfo_job', 'vacancy_settings', 'posts_per_page');
+        self::$vacancy = $plugin->job->vacancy;
+        self::$resume  = $plugin->job->resume;
 		// $this->version = $version;
 	}
 
@@ -22,9 +24,13 @@ class Wp_Linfo_Job_Public {
 	}
 
 	public function enqueue_scripts() {
-        if ( get_query_var( 'post_type' ) == $this->plugin->job->vacancy )
+        if ( get_query_var( 'post_type' ) == $this->plugin->job->vacancy ) {
     		wp_enqueue_script( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'js/linfo-job-public.js', [ 'jquery' ], $this->plugin->get_version(), false );
-
+            if (is_single()) {
+                wp_localize_script( $this->plugin->get_plugin_name(), 'ajax_object', ['ajax_url' => admin_url( 'admin-ajax.php' ) ] );
+                wp_enqueue_script( 'job-ya-share', '//yastatic.net/share/share.js' );
+            }
+        }
 	}
 
 	public function template_include( $template ) {
@@ -108,7 +114,7 @@ class Wp_Linfo_Job_Public {
                 WHERE post_id = '{$obj_id}'
                 AND meta_key = 'key'";
         $key = $wpdb->get_row( $sql );
-        return $key->meta_value;
+        return ($key) ? $key->meta_value : 0;
     }
 
     public static function title( $obj ) { ?>
@@ -144,9 +150,12 @@ class Wp_Linfo_Job_Public {
 
     public static function flashmessages() {
         if (Wp_Job_Flash::hasFlash()) {
-            foreach (Wp_Job_Flash::getFlashes() as $type => $message) {
-                echo '<div class="alert alert-'.$type.'" role="alert">'.$message.'</div>';
-            }
+            foreach (Wp_Job_Flash::getFlashes() as $type => $message) { ?>
+                <div class="alert alert-<?= $type ?>" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+                    <?= $message ?>
+                </div>
+            <?php }
         }
     }
 
