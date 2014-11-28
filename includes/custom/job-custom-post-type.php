@@ -75,6 +75,16 @@ class Job_Custom_Post_Types {
         }
     }
 
+     public function remove_resume( $id ) {
+        if (wp_delete_post( $id, true )) {
+            Wp_Job_Flash::setFlash('success', '<strong>Ваше резюме удалена!</strong>');
+        }
+    }
+
+    public function clear_rewrite_rules( $rewrite ) {
+        unset( $rewrite->rules['job/[^/]+/([^/]+)/?$'] ); 
+    }
+
     /**
      * Заменяте поле 'name' на 'id{id объекта}'
      */

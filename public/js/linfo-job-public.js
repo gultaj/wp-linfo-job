@@ -19,13 +19,13 @@ jQuery(document).ready(function( $ ) {
 	function checkKey() {
 		var key = $.trim($('#edit_key').val());
 		if (key.length == 6) {
-			var data = {action: 'check_vacancy_key', vacancy_id: $('#vacancy_id').val(), user_key: key };
+			var data = {action: 'check_job_key', obj_id: $('#obj_id').val(), user_key: key };
 			$('#edit_key').parent().removeClass('has-error');
 			$('#edit_key, #check_key').attr('disabled', true);
 			$.post(ajax_object.ajax_url, data, function(response) {
 				if (response === 'OK') {
-					if (confirm('Вы действительно хотите удалить вакансию?')) {
-						data.action = 'remove_job_vacancy';
+					if (confirm('Вы действительно хотите всё удалить?')) {
+						data.action = 'remove_job';
 						$.post(ajax_object.ajax_url, data, function(response) {
 							if (response === 'OK') {
 								var url = window.location.origin + window.location.pathname.replace(/id[0-9]+\//gi, '');

@@ -18,17 +18,20 @@ class Wp_Linfo_Job_Public {
 	}
 
 	public function enqueue_styles() {
-        if ( get_query_var( 'post_type' ) == $this->plugin->job->vacancy )
+        $post_type = get_query_var( 'post_type' );
+        if ( $post_type == $this->plugin->job->vacancy || $post_type == $this->plugin->job->resume)
 		  wp_enqueue_style( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'css/linfo-job.css', [], $this->plugin->get_version(), 'all' );
 
 	}
 
 	public function enqueue_scripts() {
-        if ( get_query_var( 'post_type' ) == $this->plugin->job->vacancy ) {
-    		wp_enqueue_script( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'js/linfo-job-public.js', [ 'jquery' ], $this->plugin->get_version(), false );
+        $post_type = get_query_var( 'post_type' );
+        wp_register_script( 'job-ya-share', '//yastatic.net/share/share.js', [], '', true );
+        if ( $post_type == $this->plugin->job->vacancy || $post_type == $this->plugin->job->resume) {
+    		wp_enqueue_script( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'js/linfo-job-public.js', [ 'lidainfo-bootstrap' ], $this->plugin->get_version(), false );
             if (is_single()) {
                 wp_localize_script( $this->plugin->get_plugin_name(), 'ajax_object', ['ajax_url' => admin_url( 'admin-ajax.php' ) ] );
-                wp_enqueue_script( 'job-ya-share', '//yastatic.net/share/share.js' );
+                wp_enqueue_script( 'job-ya-share' );
             }
         }
 	}
@@ -85,6 +88,33 @@ class Wp_Linfo_Job_Public {
         return $posts;
     }
 
+    public static function get_resumes() {
+        global $wpdb, $wp_query;
+        $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+        $post_per_page = self::$post_per_page;
+        $offset = ($paged - 1) * $post_per_page;
+        $sql = "SELECT post.post_date, post.ID, post.post_title, post.post_name,
+                        MAX(IF(meta.meta_key = 'contact', meta.meta_value, NULL)) AS contact,
+                        MAX(IF(meta.meta_key = 'salary', meta.meta_value, NULL)) AS salary
+                FROM wp_posts post 
+                INNER JOIN wp_postmeta AS meta ON post.ID = meta.post_id
+                WHERE post.post_type = '".self::$resume."'
+                    AND post.post_status = 'publish'
+                    AND (meta.meta_key = 'contact' OR meta.meta_key = 'salary')
+                GROUP BY post.ID
+                ORDER BY post.post_title
+                LIMIT ". $offset .", ". $post_per_page;
+        
+        $posts = $wpdb->get_results( $sql );
+
+        $posts = array_map(function($item){
+            $item->contact = unserialize($item->contact)['name'];
+            return $item;
+        }, $posts);
+
+        return $posts;
+    }
+
     public static function get_vacancy_data( $id ) {
     	global $wpdb;
     	$sql = "SELECT meta_key, meta_value
@@ -126,7 +156,7 @@ class Wp_Linfo_Job_Public {
     			<?= $obj->label ?> города Лиды
     		<?php endif; ?>
     		</h2>
-    		<a class="icon-plus vacancy__add_link" href="<?= home_url('/'.$obj->rewrite['slug'].'?new' ); ?>"><?= $obj->labels->add_new ?></a>
+    		<a class="icon-plus job__add_link" href="<?= home_url('/'.$obj->rewrite['slug'].'?new' ); ?>"><?= $obj->labels->add_new ?></a>
     	</div>
     <?php }
 

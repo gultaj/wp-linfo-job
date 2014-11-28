@@ -42,39 +42,38 @@
                 <?php endif ?>
             </div>
             <h3 class="contact__header">Контактные данные</h3>
-            <div class="vacancy__contact">
+            <div class="job__contact">
                 <div class="contact__company">
-                    <dt>Организация</dt><dd><?= $meta['company'] ?>
-                </dd>
+                    <dt>Организация</dt><dd><?= $meta['company'] ?></dd>
+                </div>
+                <?php if (!empty($meta['contact']['address'])) : ?>
+                    <div class="company__address">
+                        <dt>Адрес</dt> <dd><?= $meta['contact']['address'] ?></dd>
+                    </div>
+                <?php endif ?>
+                <?php if (!empty($meta['contact']['phone'])) : ?>
+                    <div class="company__phone">
+                        <dt>Телефон</dt> <dd><?= $meta['contact']['phone'] ?></dd>
+                    </div>
+                <?php endif ?>
+                <?php if (!empty($meta['contact']['email'])) : ?>
+                    <div class="company__email">
+                        <dt>E-mail</dt> <dd><?= $meta['contact']['email'] ?></dd>
+                    </div>
+                <?php endif ?>
+                <?php if (!empty($meta['contact']['site'])) : ?>
+                    <div class="company__site">
+                        <dt>Сайт</dt> <dd><?= $meta['contact']['site'] ?></dd>
+                    </div>
+                <?php endif ?>
+                <?php if (!empty($meta['contact']['name'])) : ?>
+                    <div class="contact__name">
+                        <dt>Контактное лицо</dt> <dd><?= $meta['contact']['name'] ?></dd>
+                    </div>
+                <?php endif ?>
             </div>
-            <?php if (!empty($meta['contact']['address'])) : ?>
-                <div class="company__address">
-                    <dt>Адрес</dt> <dd><?= $meta['contact']['address'] ?></dd>
-                </div>
-            <?php endif ?>
-            <?php if (!empty($meta['contact']['phone'])) : ?>
-                <div class="company__phone">
-                    <dt>Телефон</dt> <dd><?= $meta['contact']['phone'] ?></dd>
-                </div>
-            <?php endif ?>
-            <?php if (!empty($meta['contact']['email'])) : ?>
-                <div class="company__email">
-                    <dt>E-mail</dt> <dd><?= $meta['contact']['email'] ?></dd>
-                </div>
-            <?php endif ?>
-            <?php if (!empty($meta['contact']['site'])) : ?>
-                <div class="company__site">
-                    <dt>Сайт</dt> <dd><?= $meta['contact']['site'] ?></dd>
-                </div>
-            <?php endif ?>
-            <?php if (!empty($meta['contact']['name'])) : ?>
-                <div class="contact__name">
-                    <dt>Контактное лицо</dt> <dd><?= $meta['contact']['name'] ?></dd>
-                </div>
-            <?php endif ?>
+            <div class="yashare-auto-init job__share"  data-yashareL10n="ru" data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" data-yashareType="small"></div>
         </div>
-        <div class="yashare-auto-init job__share"  data-yashareL10n="ru" data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" data-yashareType="small"></div>
-    </div>
     </div>
 </div>
 <?php get_sidebar('left'); ?>

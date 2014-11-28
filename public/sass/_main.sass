@@ -5,12 +5,12 @@ $base: #009ee7
 	h2
 		font-weight: 400 !important
 
-.vacancy__list_header
+.job__list_header
 	+clr
 	padding: 7px 0
 	background: #aaa
 	color: #fff
-.vacancy__item
+.job__item
 	display: block
 	+clr
 	padding: 7px 0
@@ -18,20 +18,20 @@ $base: #009ee7
 		background: #E1EFF5 !important
 	&:nth-child(odd)
 		background: #eee
-.vacancy__item_name
+.job__item_name
 	+col(2,5)
-.vacancy__item_company
+.job__item_company
 	+col(2,5)
-.vacancy__item_salary
+.job__item_salary
 	+col(1,5)
 	text-align: right
-.vacancy__list_name
-	@extend .vacancy__item_name
-.vacancy__list_company
-	@extend .vacancy__item_company
-.vacancy__list_salary
-	@extend .vacancy__item_salary
-.vacancy__add_link
+.job__list_name
+	@extend .job__item_name
+.job__list_company
+	@extend .job__item_company
+.job__list_salary
+	@extend .job__item_salary
+.job__add_link
 	position: absolute
 	right: 10px
 	top: 5px
@@ -90,7 +90,7 @@ $base: #009ee7
 	font-size: 14px
 	font-weight: 600
 	border-bottom: 1px solid #ddd
-.vacancy__contact
+.job__contact
 	&>div
 		+clr
 		padding: 3px 0

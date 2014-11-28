@@ -106,7 +106,7 @@ class Wp_Linfo_Job_Admin {
         }
     }
 
-    public function send_vacancy_email( $email, $key ) {
+    public function send_vacancy_email(  ) {
     	$headers = 'От: lida.info <myname@lida.info>';
     	$message = '';
     	//wp_mail( $email, 'Новая вакансия', $message, $headers );

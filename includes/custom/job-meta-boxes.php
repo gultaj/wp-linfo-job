@@ -59,11 +59,17 @@ class Job_Meta_Boxes {
 		if (!is_array($contact)) $contact = ['address'=>'', 'phone'=>'', 'email'=>'', 'site'=>'', 'name'=>''];
 		$name = $this->plugin->job->vacancy;
 		require_once plugin_dir_path( __FILE__ ) . 'meta_partials/vacancy-meta-boxes.php';
-
 	}
 
 	public function resume_metabox( $obj ) {
-
+		global $current_screen;
+		$meta = ['desc', 'salary', 'edu', 'stage', 'contact', 'expiry'];
+		foreach ($meta as $value) {
+			$$value = get_post_meta( $obj->ID, $value, true );
+		}
+		if (!is_array($contact)) $contact = ['phone'=>'', 'email'=>'', 'name'=>''];
+		$name = $this->plugin->job->resume;
+		require_once plugin_dir_path( __FILE__ ) . 'meta_partials/resume-meta-boxes.php';
 	}
 
 	public function save_vacancy_meta_box( $obj_id, $data ) {
@@ -88,7 +94,24 @@ class Job_Meta_Boxes {
 	}
 
 	public function save_resume_meta_box( $obj_id, $data ) {
-
+		$sanitize = [
+			'intval' => ['edu','stage'],
+			'htmlentities' => ['desc'],
+			'sanitize_text_field' => [
+				'salary', 'expiry',
+				'contact' => ['email', 'phone', 'name',]
+			],
+			'sanitize_email' => ['contact' => ['email']],
+		];
+		$data = $this->sanitize_meta( $data, $sanitize );
+		$data['expiry'] = strtotime($data['expiry'], time());
+		$data['key'] = $this->generate_password();
+		foreach ($data as $key => $value) {
+			update_post_meta( $obj_id, $key, $value );
+		}
+		if ( is_email( $data['contact']['email'] ))
+			do_action( 'send_resume_key', $data['contact']['email'], $data['key'] );
+		return $data['key'];
 	}
 
 	public function validate_vacancy( $data ) {

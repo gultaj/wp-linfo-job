@@ -30,7 +30,7 @@ class Wp_Linfo_Job_Settings {
 	}
 
 	public function vacancy_options_page() { ?>
-	<style>.wp-editor-wrap{width:70%}</style>
+		<style>.wp-editor-wrap{width:70%}</style>
 		<div class="wrap">
             <h2>Настройки Работы</h2>
 			<?php $this->wpsf->settings(); ?>

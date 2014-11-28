@@ -7,21 +7,27 @@
             <div><?php Wp_Linfo_Job_Public::breadcrumbs( $object ) ?></div>
             <div class="content-header row"> <?php Wp_Linfo_Job_Public::title( $object ) ?> </div>
             <div class="job__aside_links"><?= Wp_Linfo_Job_Public::get_archive_link('vacancy') ?></div>
-            <div class="vacancy__list">
-                <div class="vacancy__list_header">
-                    <div class="vacancy__name">Вакансия</div>   
-                    <div class="vacancy__company">Организация</div>
-                    <div class="vacancy__salary">Оплата</div>    
+            <div class="job__flash"><?= Wp_Linfo_Job_Public::flashmessages() ?></div>
+        <?php if (!($resumes = Wp_Linfo_Job_Public::get_resumes())) : ?>
+            <h3>Ничего не найдено.</h3>
+            <a class="primary" href="<?= home_url('/'.$object->rewrite['slug'].'?new' ); ?>">Добавте своё резюме</a>
+        <?php else : ?>
+            <div class="job__list">
+                <div class="job__list_header">
+                    <div class="job__list_name">Должность</div>   
+                    <div class="job__list_company">Имя</div>
+                    <div class="job__list_salary">Оплата</div>    
                 </div>
-                <?php foreach (Wp_Linfo_Job_Public::get_vacancies() as $vacancy) : ?>
-                <a href="<?= get_permalink( $vacancy->ID ) ?>" class="vacancy">
-                    <div class="vacancy__name"><?= $vacancy->post_title ?></div>   
-                    <div class="vacancy__company"><?= $vacancy->company ?></div>
-                    <div class="vacancy__salary"><?= $vacancy->salary ?></div>
+                <?php foreach ($resumes as $resume) : ?>
+                <a href="<?= get_permalink( $resume->ID ) ?>" class="job__item">
+                    <div class="job__item_name"><?= $resume->post_title ?></div>   
+                    <div class="job__item_company"><?= $resume->contact ?></div>
+                    <div class="job__item_salary"><?= $resume->salary ?></div>
                 </a>
                 <?php endforeach; ?>
             </div>
             <div class="job__pagination"> <?php lidainfo_paging_nav() ?> </div>
+        <?php endif ?>
         </div>
     </div>
 </div>

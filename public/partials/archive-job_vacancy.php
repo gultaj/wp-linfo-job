@@ -12,17 +12,17 @@
         	<h3>Ничего не найдено.</h3>
         	<a class="primary" href="<?= home_url('/'.$object->rewrite['slug'].'?new' ); ?>">Добавте свою вакансию</a>
         <?php else : ?>
-            <div class="vacancy__list">
-                <div class="vacancy__list_header">
-                    <div class="vacancy__list_name">Вакансия</div>   
-                    <div class="vacancy__list_company">Организация</div>
-                    <div class="vacancy__list_salary">Оплата</div>    
+            <div class="job__list">
+                <div class="job__list_header">
+                    <div class="job__list_name">Вакансия</div>   
+                    <div class="job__list_company">Организация</div>
+                    <div class="job__list_salary">Оплата</div>    
                 </div>
                 <?php foreach ($vacancies as $vacancy) : ?>
-                <a href="<?= get_permalink( $vacancy->ID ) ?>" class="vacancy__item">
-                    <div class="vacancy__item_name"><?= $vacancy->post_title ?></div>   
-                    <div class="vacancy__item_company"><?= $vacancy->company ?></div>
-                    <div class="vacancy__item_salary"><?= $vacancy->salary ?></div>
+                <a href="<?= get_permalink( $vacancy->ID ) ?>" class="job__item">
+                    <div class="job__item_name"><?= $vacancy->post_title ?></div>   
+                    <div class="job__item_company"><?= $vacancy->company ?></div>
+                    <div class="job__item_salary"><?= $vacancy->salary ?></div>
                 </a>
                 <?php endforeach; ?>
             </div>
