@@ -16,7 +16,7 @@
 .job__item_salary, .job__list_salary { width: 20%; text-align: right; }
 
 .job__add_link { position: absolute; right: 10px; top: 5px; color: #fff; padding: 5px; border: 1px solid #fff; vertical-align: bottom; font-size: 14px; border-radius: 2px; transition: all 0.2s; }
-.job__add_link:before { vertical-align: middle; margin-right: 5px; }
+.job__add_link:before { vertical-align: bottom; margin-right: 5px; }
 .job__add_link:focus { color: white; text-decoration: none; }
 .job__add_link:hover { text-decoration: none !important; background: #fff; color: #009ee7; }
 
