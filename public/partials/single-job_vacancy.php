@@ -15,6 +15,7 @@
             <div class="job__flash"><?= Wp_Linfo_Job_Public::flashmessages() ?></div>
             <h3 class="vacancy__title"><?= $object->post_title ?></h3>
             <input type="hidden" name="vacancy_id" id="vacancy_id" value="<?= $object->ID ?>">
+            <input type="hidden" name="job_type" id="job_type" value="vacancy">
             <div class="vacancy">
                 <div class="vacancy__salary">
                     <dt>Оплата</dt> <dd><?= $meta['salary'] ?></dd>
@@ -72,7 +73,12 @@
                     </div>
                 <?php endif ?>
             </div>
-            <div class="yashare-auto-init job__share"  data-yashareL10n="ru" data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" data-yashareType="small"></div>
+            <div class="yashare-auto-init job__share"  
+                data-yashareL10n="ru" 
+                data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" 
+                data-yashareTheme="counter" 
+                data-yashareType="small"
+                data-yashareTitle="Вакансия | <?= $object->post_title ?>"></div>
         </div>
     </div>
 </div>

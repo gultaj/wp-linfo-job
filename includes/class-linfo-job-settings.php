@@ -7,7 +7,7 @@ class Wp_Linfo_Job_Settings {
 
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
-		$this->wpsf = new WordPressSettingsFramework($this->plugin->path .'settings/example-settings.php', 'linfo_job');
+		$this->wpsf = new WordPressSettingsFramework($this->plugin->path .'settings/job-settings.php', 'linfo_job');
 		//add_filter( $this->wpsf->get_option_group() .'_settings_validate', [$this, 'validate_settings'] );
 		return $this;
 	}
@@ -25,12 +25,11 @@ class Wp_Linfo_Job_Settings {
 			'Настройки', 
 			'manage_options', 
 			'linfo_job', 
-			[&$this, 'vacancy_options_page']
+			[&$this, 'job_options_page']
 		);
 	}
 
-	public function vacancy_options_page() { ?>
-		<style>.wp-editor-wrap{width:70%}</style>
+	public function job_options_page() { ?>
 		<div class="wrap">
             <h2>Настройки Работы</h2>
 			<?php $this->wpsf->settings(); ?>

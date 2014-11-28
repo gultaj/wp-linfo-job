@@ -21,7 +21,7 @@
                 <?php foreach ($resumes as $resume) : ?>
                 <a href="<?= get_permalink( $resume->ID ) ?>" class="job__item">
                     <div class="job__item_name"><?= $resume->post_title ?></div>   
-                    <div class="job__item_company"><?= $resume->contact ?></div>
+                    <div class="job__item_company"><?= $resume->company ?></div>
                     <div class="job__item_salary"><?= $resume->salary ?></div>
                 </a>
                 <?php endforeach; ?>

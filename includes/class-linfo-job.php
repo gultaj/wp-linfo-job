@@ -124,7 +124,7 @@ class Wp_Linfo_Job {
 		$this->loader->add_action( 'save_post_'.$this->job->vacancy, $this->job, 'save', 10, 2 );
 		$this->loader->add_action( 'save_post_'.$this->job->resume, $this->job, 'save', 10, 2 );
 		$this->loader->add_action( 'wp_insert_post_data', $this->job, 'before_save', 10, 2 );
-		$this->loader->add_action( 'remove_job_vacancy', $this->job, 'remove_vacancy' );
+		$this->loader->add_action( 'remove_job', $this->job, 'remove' );
 		$this->loader->add_action( 'generate_rewrite_rules', $this->job, 'clear_rewrite_rules' ); 
 
 	}

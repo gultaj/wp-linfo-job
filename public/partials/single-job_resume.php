@@ -15,6 +15,7 @@
             <div class="job__flash"><?= Wp_Linfo_Job_Public::flashmessages() ?></div>
             <h3 class="vacancy__title"><?= $object->post_title ?></h3>
             <input type="hidden" name="obj_id" id="obj_id" value="<?= $object->ID ?>">
+            <input type="hidden" name="job_type" id="job_type" value="resume">
             <div class="vacancy">
                 <div class="vacancy__education">
                     <dt>Образование</dt>
@@ -35,9 +36,9 @@
             </div>
             <h3 class="contact__header">Контактные данные</h3>
             <div class="job__contact">
-	            <?php if (!empty($meta['contact']['name'])) : ?>
+	            <?php if (!empty($meta['company'])) : ?>
 	                <div class="contact__name">
-	                    <dt>Контактное лицо</dt> <dd><?= $meta['contact']['name'] ?></dd>
+	                    <dt>Контактное лицо</dt> <dd><?= $meta['company'] ?></dd>
 	                </div>
 	            <?php endif ?>
 	            <?php if (!empty($meta['contact']['phone'])) : ?>
@@ -51,7 +52,12 @@
 	                </div>
 	            <?php endif ?>
 	        </div>
-        <div class="yashare-auto-init job__share"  data-yashareL10n="ru" data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" data-yashareTheme="counter" data-yashareType="small"></div>
+        <div class="yashare-auto-init job__share"  
+        	data-yashareL10n="ru" 
+        	data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" 
+        	data-yashareTheme="counter" 
+        	data-yashareType="small"
+        	data-yashareTitle="Резюме | <?= $object->post_title ?>"></div>
     </div>
     </div>
 </div>

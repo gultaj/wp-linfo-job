@@ -11,7 +11,7 @@ class Wp_Linfo_Job_Public {
 
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
-        self::$post_per_page = wpsf_get_setting('linfo_job', 'vacancy_settings', 'posts_per_page');
+        self::$post_per_page = wpsf_get_setting('linfo_job', 'job_settings', 'posts_per_page');
         self::$vacancy = $plugin->job->vacancy;
         self::$resume  = $plugin->job->resume;
 		// $this->version = $version;
@@ -42,7 +42,14 @@ class Wp_Linfo_Job_Public {
     	if ( $post_type == $job->vacancy || $post_type == $job->resume ) {
             if ( isset($_POST['vacancy']) && isset($_POST['create-vacancy-nonce']) ) {
                 if ( wp_verify_nonce( $_POST['create-vacancy-nonce'], 'create-vacancy' ) ) {
-                    if ($id = $this->plugin->job->create_vacancy()) {
+                    if ($id = $this->plugin->job->create( 'vacancy', $_POST['vacancy'] )) {
+                        wp_safe_redirect( get_permalink( $id ) );
+                    }
+                }
+            }
+            if ( isset($_POST['resume']) && isset($_POST['create-resume-nonce']) ) {
+                if ( wp_verify_nonce( $_POST['create-resume-nonce'], 'create-resume' ) ) {
+                    if ($id = $this->plugin->job->create( 'resume', $_POST['resume'] )) {
                         wp_safe_redirect( get_permalink( $id ) );
                     }
                 }
@@ -94,23 +101,18 @@ class Wp_Linfo_Job_Public {
         $post_per_page = self::$post_per_page;
         $offset = ($paged - 1) * $post_per_page;
         $sql = "SELECT post.post_date, post.ID, post.post_title, post.post_name,
-                        MAX(IF(meta.meta_key = 'contact', meta.meta_value, NULL)) AS contact,
+                        MAX(IF(meta.meta_key = 'company', meta.meta_value, NULL)) AS company,
                         MAX(IF(meta.meta_key = 'salary', meta.meta_value, NULL)) AS salary
                 FROM wp_posts post 
                 INNER JOIN wp_postmeta AS meta ON post.ID = meta.post_id
                 WHERE post.post_type = '".self::$resume."'
                     AND post.post_status = 'publish'
-                    AND (meta.meta_key = 'contact' OR meta.meta_key = 'salary')
+                    AND (meta.meta_key = 'company' OR meta.meta_key = 'salary')
                 GROUP BY post.ID
                 ORDER BY post.post_title
                 LIMIT ". $offset .", ". $post_per_page;
         
         $posts = $wpdb->get_results( $sql );
-
-        $posts = array_map(function($item){
-            $item->contact = unserialize($item->contact)['name'];
-            return $item;
-        }, $posts);
 
         return $posts;
     }

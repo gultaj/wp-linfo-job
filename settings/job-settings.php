@@ -15,20 +15,26 @@ function wpsf_example_settings( $wpsf_settings ) {
 
     // General Settings section
     $wpsf_settings[] = [
-        'section_id' => 'vacancy_settings',
+        'section_id' => 'job_settings',
         'section_title' => 'Настройки отображения',
         'section_order' => 5,
         'fields' => [
             [
                 'id' => 'posts_per_page',
-                'title' => 'Количество вакансий на странице',
+                'title' => 'Количество вакансий/резюме на странице',
                 'type' => 'number',
                 'std' => 10
             ],
             [
-            	'id' => 'email',
-            	'title' => 'Текст после регистрации',
+            	'id' => 'register_vacancy',
+            	'title' => 'Текст после регистрации вакансии',
             	'type' => 'textarea',
+                'class' => ''
+            ],
+            [
+                'id' => 'register_resume',
+                'title' => 'Текст после регистрации резюме',
+                'type' => 'textarea',
                 'class' => ''
             ]
         ]

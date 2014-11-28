@@ -107,7 +107,7 @@
 					<div class="form-group">
 						<p class="require_fields"><span class="text-danger">*</span> - поля обязательные для заполнения</p>
 						<div class="col-sm-offset-3 col-sm-9">
-							<button type="submit" id="send-vacancy" class="btn btn-primary">Отправить</button>
+							<button type="submit" id="send-job" class="btn btn-primary">Отправить</button>
 							<button type="submit" name="cancel" value="<?= @$_SERVER['HTTP_REFERER']; ?>" class="btn btn-default">Отмена</button>
 						</div>
 					</div>

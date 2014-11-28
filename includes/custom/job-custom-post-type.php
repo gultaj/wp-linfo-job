@@ -7,7 +7,7 @@ class Job_Custom_Post_Types {
 	
 	public $resume = "job_resume";
 
-    public $slug = 'job';
+    public $slug = 'praca';
 
 
 	public function register() {
@@ -48,41 +48,40 @@ class Job_Custom_Post_Types {
             do_action( 'save_'.$this->resume, $obj_id, $_POST[$this->resume] );
     }
 
-    public function create_vacancy() {
-        $vacancy = $_POST['vacancy'];
-        if (strlen(trim($vacancy['title'])) == 0) return false;
+    public function create( $post_type, $data ) {
+        if (strlen(trim($data['title'])) == 0) return false;
         $args = [
-            'post_type' => $this->vacancy,
-            'post_title' => wp_strip_all_tags($vacancy['title']),
+            'post_type' => $this->$post_type,
+            'post_title' => wp_strip_all_tags($data['title']),
             'post_status' => 'publish'
         ];
-        $vacancy_id = wp_insert_post( $args );
-        wp_update_post( ['ID'=>$vacancy_id, 'post_name'=>'id'.$vacancy_id] );
-        unset($vacancy['title']);
+        $obj_id = wp_insert_post( $args );
+        wp_update_post( ['ID'=>$obj_id, 'post_name'=>'id'.$obj_id] );
+        unset($data['title']);
 
-        do_action( 'save_'.$this->vacancy, $vacancy_id, $vacancy );
+        do_action( 'save_'.$this->$post_type, $obj_id, $data );
 
-        $key = Wp_Linfo_Job_Public::get_key( $vacancy_id );
-        $message = wpsf_get_setting('linfo_job', 'vacancy_settings', 'email');
+        $key = Wp_Linfo_Job_Public::get_key( $obj_id );
+        $message = wpsf_get_setting( 'linfo_job', 'job_settings', 'register_'.$post_type );
         $message = preg_replace('/%key%/ui', $key, nl2br($message));
         Wp_Job_Flash::setFlash('success', $message);
-        return $vacancy_id;
+        return $obj_id;    
     }
 
-    public function remove_vacancy( $id ) {
-        if (wp_delete_post( $id, true )) {
-            Wp_Job_Flash::setFlash('success', '<strong>Ваша вакансия удалена!</strong>');
+    public function remove( $id ) {
+        $post_type = get_post_type( $id );
+        if ($post_type === $this->vacancy) {
+            $message = '<strong>Ваша вакансия удалена!</strong>';
+        } else {
+            $message = '<strong>Ваше резюме удалено!</strong>';
         }
-    }
-
-     public function remove_resume( $id ) {
         if (wp_delete_post( $id, true )) {
-            Wp_Job_Flash::setFlash('success', '<strong>Ваше резюме удалена!</strong>');
+            Wp_Job_Flash::setFlash('success', $message);
         }
     }
 
     public function clear_rewrite_rules( $rewrite ) {
-        unset( $rewrite->rules['job/[^/]+/([^/]+)/?$'] ); 
+        unset( $rewrite->rules[$this->slug.'/[^/]+/([^/]+)/?$'] ); 
     }
 
     /**

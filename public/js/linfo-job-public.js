@@ -5,7 +5,7 @@ jQuery(document).ready(function( $ ) {
 	var html = '<div id="popover-group"><div class="input-group"><input type="text" id="edit_key" class="form-control input-sm"><span class="input-group-btn"><button class="btn btn-default btn-sm" id="check_key" type="button"> &raquo; </button></span></div>';
 	$('.vacancy__remove').popover({html: true, content: html, placement: 'bottom'});
 
-	$('#send-vacancy').click(function() {
+	$('#send-job').click(function() {
 		var errors;
 		$('.has-error').removeClass('has-error');
 		$('.help-block').remove();
@@ -24,7 +24,8 @@ jQuery(document).ready(function( $ ) {
 			$('#edit_key, #check_key').attr('disabled', true);
 			$.post(ajax_object.ajax_url, data, function(response) {
 				if (response === 'OK') {
-					if (confirm('Вы действительно хотите всё удалить?')) {
+					var type = ($("#job_type").val() == 'vacancy') ? 'вакансию' : 'резюме';
+					if (confirm('Вы действительно хотите удалить '+type+'?')) {
 						data.action = 'remove_job';
 						$.post(ajax_object.ajax_url, data, function(response) {
 							if (response === 'OK') {

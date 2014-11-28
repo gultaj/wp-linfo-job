@@ -63,11 +63,11 @@ class Job_Meta_Boxes {
 
 	public function resume_metabox( $obj ) {
 		global $current_screen;
-		$meta = ['desc', 'salary', 'edu', 'stage', 'contact', 'expiry'];
+		$meta = ['desc', 'salary', 'edu', 'stage', 'contact', 'expiry', 'company'];
 		foreach ($meta as $value) {
 			$$value = get_post_meta( $obj->ID, $value, true );
 		}
-		if (!is_array($contact)) $contact = ['phone'=>'', 'email'=>'', 'name'=>''];
+		if (!is_array($contact)) $contact = ['phone'=>'', 'email'=>''];
 		$name = $this->plugin->job->resume;
 		require_once plugin_dir_path( __FILE__ ) . 'meta_partials/resume-meta-boxes.php';
 	}
@@ -98,8 +98,8 @@ class Job_Meta_Boxes {
 			'intval' => ['edu','stage'],
 			'htmlentities' => ['desc'],
 			'sanitize_text_field' => [
-				'salary', 'expiry',
-				'contact' => ['email', 'phone', 'name',]
+				'salary', 'expiry', 'company',
+				'contact' => ['email', 'phone',]
 			],
 			'sanitize_email' => ['contact' => ['email']],
 		];

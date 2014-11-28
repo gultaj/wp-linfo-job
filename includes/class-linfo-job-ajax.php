@@ -21,7 +21,7 @@ class Wp_Linfo_Job_Ajax {
 		$obj_id = intval( $_POST['obj_id']);
 		$key = Wp_Linfo_Job_Public::get_key( $obj_id );
 		if ($user_key === $key) {
-			do_action('remove_job_vacancy', $obj_id );
+			do_action('remove_job', $obj_id );
 			echo 'OK';
 		} else {
 			echo 'false';
