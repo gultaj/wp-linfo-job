@@ -140,7 +140,7 @@ class Wp_Linfo_Job {
 	public function define_settings_hooks() {
 
 		$this->loader->add_action( 'admin_menu', $this->settings, 'add_admin_menu' );
-		//$this->loader->add_action( 'admin_init', $this->settings, 'register_settings' );*/
+		$this->loader->add_action( 'wpsf_after_settings', $this->settings, 'after_settings' );
 
 	}
 

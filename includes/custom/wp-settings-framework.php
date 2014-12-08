@@ -305,11 +305,11 @@ if( !class_exists('WordPressSettingsFramework') ){
             <form action="options.php" method="post">
                 <?php do_action( 'wpsf_before_settings_fields' ); ?>
                 <?php settings_fields( $this->option_group ); ?>
-        		<?php do_settings_sections( $this->option_group ); ?>		
+                <?php do_settings_sections( $this->option_group ); ?>       
+        		<?php do_action( 'wpsf_after_settings' ); ?>
                 <?php submit_button() ?>
              </form>
-    		<?php
-    		do_action( 'wpsf_after_settings' );
+            <?php
         }
 
     }
