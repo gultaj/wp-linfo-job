@@ -21,29 +21,21 @@ function wpsf_example_settings( $wpsf_settings ) {
         'fields' => [
             [
                 'id' => 'posts_per_page',
-                'title' => 'Количество вакансий/резюме на странице',
+                'title' => 'Записей на странице',
                 'type' => 'number',
                 'std' => 10
-            ],
-            [
+            ], [
             	'id' => 'register_vacancy',
             	'title' => 'Текст после регистрации вакансии',
             	'type' => 'textarea',
                 'class' => ''
-            ],
-            [
+            ], [
                 'id' => 'register_resume',
                 'title' => 'Текст после регистрации резюме',
                 'type' => 'textarea',
                 'class' => ''
             ]
         ]
-    ];
-    $wpsf_settings[] = [
-        'section_id' => 'vacancy_import',
-        'section_title' => 'Импорт',
-        'section_order' => 6,
-        'fields' => [[]]
     ];
 
     return $wpsf_settings;

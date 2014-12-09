@@ -151,6 +151,8 @@ class Wp_Linfo_Job {
         $this->loader->add_action( 'wp_ajax_nopriv_check_job_key', $ajax, 'check_user_key' );
         $this->loader->add_action( 'wp_ajax_remove_job', $ajax, 'remove_job' );
         $this->loader->add_action( 'wp_ajax_nopriv_remove_job', $ajax, 'remove_job' );
+
+        $this->loader->add_action( 'wp_ajax_job_parse_file', $ajax, 'job_parse_file' );
 	}
 
 	public function run() {

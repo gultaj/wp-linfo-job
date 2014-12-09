@@ -29,6 +29,18 @@ class Wp_Linfo_Job_Ajax {
 		die();
 	}
 
+	public function job_parse_file() {
+		$file = $_FILES['job_parse'];
+		$uploads_dir = wp_upload_dir();
+		$temp_file = $uploads_dir['basedir'] . '/' . time() . basename($file['name']);
+		if (move_uploaded_file($_FILES['job_parse']['tmp_name'], $temp_file)) {
+			echo $temp_file;
+		} else {
+			echo "Error: can't load file";
+		}
+		die();
+	}
+
 }
  
 ?>

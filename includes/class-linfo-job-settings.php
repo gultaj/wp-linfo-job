@@ -34,11 +34,13 @@ class Wp_Linfo_Job_Settings {
 	}
 
 	public function after_settings() { ?>
+		<h3>Импорт</h3>
 		<table class="form-table"><tbody>
 			<tr>
-				<th scope="row">Файл</th>
+				<th scope="row">Excel-файл</th>
 				<td>
-					<input type="file" name="job_parse" id="job_parse_file" placeholder="" class="regular-text ">
+					<input type="file" name="job_parse" id="job_parse_file" placeholder="" class="regular-text"
+						accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
 					<button type="button" class="button-secondary" id="load_parse_file">Загрузить</button>
 				</td>
 			</tr>
