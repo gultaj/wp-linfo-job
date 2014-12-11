@@ -80,7 +80,8 @@
                 data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki" 
                 data-yashareTheme="counter" 
                 data-yashareType="small"
-                data-yashareTitle="Вакансия | <?= $object->post_title ?>"></div>
+                data-yashareTitle='Вакансия | <?= $object->post_title ?>'
+                data-yashareDescription='<?= $meta['company'] ?>'></div>
         </div>
     </div>
 </div>
