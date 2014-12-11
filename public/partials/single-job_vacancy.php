@@ -32,10 +32,12 @@
                     <dt>Образование</dt>
                     <dd><?= Job_Meta_Boxes::get_elem('education', $meta['edu']) ?></dd>
                 </div>
+                <?php if (!empty($meta['stage'])) : ?>
                 <div class="vacancy__stage">
                     <dt>Опыт</dt>
                     <dd><?= Job_Meta_Boxes::get_elem('stage', $meta['stage']) ?></dd>
                 </div>
+                <?php endif ?>
                 <?php if (!empty($meta['desc'])) : ?>
                 <div class="vacancy__desc">
                     <dt>Дополнительно</dt> <dd><?= nl2br($meta['desc']) ?></dd>
