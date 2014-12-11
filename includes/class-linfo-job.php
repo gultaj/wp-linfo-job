@@ -126,6 +126,7 @@ class Wp_Linfo_Job {
 		$this->loader->add_action( 'wp_insert_post_data', $this->job, 'before_save', 10, 2 );
 		$this->loader->add_action( 'remove_job', $this->job, 'remove' );
 		$this->loader->add_action( 'generate_rewrite_rules', $this->job, 'clear_rewrite_rules' ); 
+		$this->loader->add_action( 'create_from_file', $this->job, 'create_from_file');
 
 	}
 
@@ -134,6 +135,7 @@ class Wp_Linfo_Job {
 		$this->loader->add_action( 'add_meta_boxes', $this->meta, 'create' );
 		$this->loader->add_action( 'save_'.$this->job->vacancy, $this->meta, 'save_vacancy_meta_box', 10, 2 );
 		$this->loader->add_action( 'save_'.$this->job->resume, $this->meta, 'save_resume_meta_box', 10, 2 );
+		$this->loader->add_action( 'create_from_file_'.$this->job->vacancy, $this->meta, 'save_from_file', 10, 2);
 
 	}
 

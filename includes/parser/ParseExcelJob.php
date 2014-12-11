@@ -1,5 +1,5 @@
 <?php 
-require "vendor/PHPExcel.php";
+require "vendor/phpoffice/phpexcel/Classes/PHPExcel.php";
 
 class ParseExcelJob {
 
@@ -38,23 +38,41 @@ class ParseExcelJob {
 		foreach ($this->data as $key => $vacancy) {
 			$data = preg_replace("/(гродненская\s*область\s*)?/ui", '', $vacancy[1]);
 			$this->parseCommon($vacancy, $key);
-			$this->parseEmail($data, $key);
-			$this->parsePhone($data, $key);
-			if (!$this->parseLocation($data, $key)) continue;
+			$data = $this->parseEmail($data, $key);
+			$data = $this->parsePhone($data, $key);
+			if (!($data = $this->parseLocation($data, $key))) continue;
 			$data = $this->sanitizeData($data);
 			$this->parseAddress($data, $key);
+			//$this->parseDesc($vacancy[2], $key);
 		}
 		return $this;
+	}
+
+	private function formatDate($date) {
+		// return $date;
+		return DateTime::createFromFormat('d.m.Y H:i:s', $date." 12:00:00");
 	}
 
 	private function parseCommon($data, $key) {
 		$this->parse[$key]['company'] = trim($data[0]);
 		$this->parse[$key]['vacancy'] = trim($data[2]);
 		$this->parse[$key]['salary'] = trim($data[6]);
-		$this->parse[$key]['date'] = trim($data[7]);
+		$this->parse[$key]['date'] = $this->formatDate(trim($data[7]));
 		$this->parse[$key]['edu'] = mb_strtolower($data[3], 'utf-8');
 		$this->parse[$key]['shift'] = mb_strtolower($data[4], 'utf-8');
 		$this->parse[$key]['time'] = mb_strtolower($data[5], 'utf-8');
+		$this->parse[$key]['stage'] = '';
+		$this->parse[$key]['expiry'] = '';
+		$this->parse[$key]['contact'] = ['address'=>'', 'phone'=>'', 'email'=>'', 'site'=>'', 'name'=>''];
+	}
+
+	private function parseDesc($data, $key) {
+		$this->parse[$key]['desc'] = '';
+		if (preg_match("/\((\.\s)?(.*)\)/ui", $data, $matches)) {
+			$this->parse[$key]['desc'] = $matches;
+			// $this->parse[$key]['vacancy'] = str_replace($matches[0], '', $data);
+			// $this->parse[$key]['desc'] = isset($matches[2]) ? $matches[2] : '';
+		}
 	}
 
 	private function parseEmail($data, $key) {
@@ -69,17 +87,19 @@ class ParseExcelJob {
 					$site .=  (empty($site) ? '' : ', ') . strtolower(trim($value));	
 				}
 			}
-			$this->parse[$key]['email'] = $email;
-			$this->parse[$key]['site'] = $site;
+			$this->parse[$key]['contact']['email'] = $email;
+			$this->parse[$key]['contact']['site'] = $site;
 		}
+		return $data;
 	}
 
 	private function parsePhone($data, $key) {
 		if (preg_match("/([\d\-]{6,11})+/iu", $data, $matches, PREG_OFFSET_CAPTURE)) {
 			$phone = substr($data, $matches[0][1]);
 			$data = str_replace($phone, '', $data);
-			$this->parse[$key]['phone'] = trim($phone);
+			$this->parse[$key]['contact']['phone'] = trim($phone);
 		}
+		return $data;
 	}
 
 	private function parseLocation($data, $key) {
@@ -97,7 +117,7 @@ class ParseExcelJob {
 			$data = preg_replace($loc, '', $data);
 			$this->parse[$key]['locate'] = "д. " . mb_convert_case(trim($matches[2]), MB_CASE_TITLE, 'utf-8');
 		}
-		return true;
+		return $data;
 	}
 
 	private function parseAddress($data, $key) {
@@ -109,7 +129,8 @@ class ParseExcelJob {
 			}
 			return mb_strtolower($matches[1], 'utf-8');
 		}, $data);
-		$this->parse[$key]['address'] = $address;
+		$this->parse[$key]['contact']['address'] = $this->parse[$key]['locate'].", ".$address;
+		unset($this->parse[$key]['locate']);
 	}
 
 	private function sanitizeData($data) {

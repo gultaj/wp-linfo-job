@@ -20,7 +20,7 @@ class Job_Meta_Boxes {
 	static $type = [
 		'0' => 'полная занятость',
  		'1' => 'частичная занятость',
- 		'2' => 'разовая работа',
+ 		'2' => 'временная работа',
 	];
 	static $stage = [
 		'0' => 'не имеет значения',
@@ -112,6 +112,40 @@ class Job_Meta_Boxes {
 		if ( is_email( $data['contact']['email'] ))
 			do_action( 'send_resume_key', $data['contact']['email'], $data['key'] );
 		return $data['key'];
+	}
+
+	public function create_from_file( $obj_id, $data ) {
+		$edu = [
+			'высшее' => '4',
+			'профессионально-техническое' => '3',
+			'общее среднее' => '1',
+			'среднее специальное' => '2',
+			'общее базовое' => '0'
+		];
+		$shift = [
+			'1 смена' => '0',
+			'2 смены' => '2',
+			'гибкое рабочее время' => '1',
+			'скользящий график' => '1',
+			'3 смена' => '2'
+		];
+		$type = [
+			'постоянная' => '0',
+	 		'временная' => '2',
+		];
+		$data['edu'] = isset($edu[$data['edu']]) ? $edu[$data['edu']] : '0';
+		$data['shift'] = isset($edu[$data['shift']]) ? $edu[$data['shift']] : '0';
+		$data['type'] = isset($edu[$data['type']]) ? $edu[$data['type']] : '0';
+		$data['key'] = $this->generate_password();
+		$data['expiry'] = strtotime("+1 month", $data['date']->getTimestamp());
+		$sanitize = [
+			'sanitize_text_field' => ['salary', 'company','contact' => ['email', 'phone',]],
+			'sanitize_email' => ['contact' => ['email']],
+		];
+		$data = $this->sanitize_meta( $data, $sanitize );
+		foreach ($data as $key => $value) {
+			update_post_meta( $obj_id, $key, $value );
+		}
 	}
 
 	public function validate_vacancy( $data ) {

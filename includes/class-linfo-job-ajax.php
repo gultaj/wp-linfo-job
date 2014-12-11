@@ -34,7 +34,10 @@ class Wp_Linfo_Job_Ajax {
 		$uploads_dir = wp_upload_dir();
 		$temp_file = $uploads_dir['basedir'] . '/' . time() . basename($file['name']);
 		if (move_uploaded_file($_FILES['job_parse']['tmp_name'], $temp_file)) {
-			echo $temp_file;
+			require_once 'parser/ParseExcelJob.php';
+			$reader = new ParseExcelJob( $temp_file );
+			$data = $reader->readData()->parse()->getResultData();
+			do_action( 'create_from_file', $data);
 		} else {
 			echo "Error: can't load file";
 		}

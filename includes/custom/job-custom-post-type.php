@@ -68,6 +68,34 @@ class Job_Custom_Post_Types {
         return $obj_id;    
     }
 
+    public function create_from_file( $posts ) {
+        global $wpdb;
+        $saved = 0;
+        foreach ($posts as $post) {
+            $date = $post['date']->format('Y-m-d H:i:s');
+            $sql = "SELECT COUNT(*)
+                    FROM wp_posts AS post
+                    INNER JOIN wp_postmeta AS meta ON meta.post_id = post.ID 
+                    WHERE post.post_date = '{$date}' AND post.post_title = '{$post['vacancy']}'
+                    AND meta.meta_key = 'company' AND meta.meta_value = '{$post['company']}'";
+
+            if (!$wpdb->get_var( $sql )) {
+                $args = [
+                    'post_type' => $this->vacancy,
+                    'post_title' => wp_strip_all_tags($post['vacancy']),
+                    'post_status' => 'publish',
+                    'post_date' => $date
+                ];
+                $obj_id = wp_insert_post( $args );
+                wp_update_post( ['ID'=>$obj_id, 'post_name'=>'id'.$obj_id] );
+                unset($post['vacancy']);
+                do_action( 'create_from_file_'.$this->vacancy, $obj_id, $post );
+                $saved++;
+            } 
+        }
+        echo json_encode(['saved' => $saved, 'ignored' => count($posts) - $saved]); 
+    }
+
     public function remove( $id ) {
         $post_type = get_post_type( $id );
         if ($post_type === $this->vacancy) {
