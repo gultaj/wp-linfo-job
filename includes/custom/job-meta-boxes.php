@@ -138,6 +138,7 @@ class Job_Meta_Boxes {
 		$data['type'] = isset($edu[$data['type']]) ? $edu[$data['type']] : '0';
 		$data['key'] = $this->generate_password();
 		$data['expiry'] = strtotime("+1 month", $data['date']->getTimestamp());
+		unset($data['date']);
 		$sanitize = [
 			'sanitize_text_field' => ['salary', 'company','contact' => ['email', 'phone',]],
 			'sanitize_email' => ['contact' => ['email']],

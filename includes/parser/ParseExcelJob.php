@@ -1,5 +1,5 @@
 <?php 
-require "vendor/phpoffice/phpexcel/Classes/PHPExcel.php";
+require "vendor/PHPExcel.php";
 
 class ParseExcelJob {
 
@@ -37,6 +37,7 @@ class ParseExcelJob {
 	public function parse() {
 		foreach ($this->data as $key => $vacancy) {
 			$data = preg_replace("/(гродненская\s*область\s*)?/ui", '', $vacancy[1]);
+			$data = $this->filterSpaces($data);
 			$this->parseCommon($vacancy, $key);
 			$data = $this->parseEmail($data, $key);
 			$data = $this->parsePhone($data, $key);
@@ -54,13 +55,13 @@ class ParseExcelJob {
 	}
 
 	private function parseCommon($data, $key) {
-		$this->parse[$key]['company'] = trim($data[0]);
-		$this->parse[$key]['vacancy'] = trim($data[2]);
-		$this->parse[$key]['salary'] = trim($data[6]);
+		$this->parse[$key]['company'] = $this->filterSpaces(trim($data[0]));
+		$this->parse[$key]['vacancy'] = $this->filterSpaces(trim($data[2]));
+		$this->parse[$key]['salary'] = $this->filterSpaces(trim($data[6]));
 		$this->parse[$key]['date'] = $this->formatDate(trim($data[7]));
 		$this->parse[$key]['edu'] = mb_strtolower($data[3], 'utf-8');
 		$this->parse[$key]['shift'] = mb_strtolower($data[4], 'utf-8');
-		$this->parse[$key]['time'] = mb_strtolower($data[5], 'utf-8');
+		$this->parse[$key]['type'] = mb_strtolower($data[5], 'utf-8');
 		$this->parse[$key]['stage'] = '';
 		$this->parse[$key]['expiry'] = '';
 		$this->parse[$key]['contact'] = ['address'=>'', 'phone'=>'', 'email'=>'', 'site'=>'', 'name'=>''];
@@ -140,6 +141,10 @@ class ParseExcelJob {
 		$data = preg_replace("/\s+/ui", " ", $data);
 		$data = preg_replace("/лидский район/ui", "", $data);
 		return $data;
+	}
+
+	private function filterSpaces($data) {
+		return preg_replace("/\s+/", " ", $data);
 	}
 
 }

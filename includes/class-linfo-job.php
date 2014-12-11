@@ -135,7 +135,7 @@ class Wp_Linfo_Job {
 		$this->loader->add_action( 'add_meta_boxes', $this->meta, 'create' );
 		$this->loader->add_action( 'save_'.$this->job->vacancy, $this->meta, 'save_vacancy_meta_box', 10, 2 );
 		$this->loader->add_action( 'save_'.$this->job->resume, $this->meta, 'save_resume_meta_box', 10, 2 );
-		$this->loader->add_action( 'create_from_file_'.$this->job->vacancy, $this->meta, 'save_from_file', 10, 2);
+		$this->loader->add_action( 'create_from_file_'.$this->job->vacancy, $this->meta, 'create_from_file', 10, 2);
 
 	}
 

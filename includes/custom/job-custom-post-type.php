@@ -75,11 +75,15 @@ class Job_Custom_Post_Types {
             $date = $post['date']->format('Y-m-d H:i:s');
             $sql = "SELECT COUNT(*)
                     FROM wp_posts AS post
-                    INNER JOIN wp_postmeta AS meta ON meta.post_id = post.ID 
-                    WHERE post.post_date = '{$date}' AND post.post_title = '{$post['vacancy']}'
-                    AND meta.meta_key = 'company' AND meta.meta_value = '{$post['company']}'";
-
-            if (!$wpdb->get_var( $sql )) {
+                    RIGHT JOIN wp_postmeta AS meta ON meta.post_id = post.ID 
+                    WHERE post.post_date = %s AND post.post_title = %s
+                    AND post.post_type = %s AND post.post_status = 'publish'
+                    AND meta.meta_key = 'company' AND meta.meta_value = %s";
+            $counts = $wpdb->get_var( 
+                $wpdb->prepare( $sql, $date, wp_strip_all_tags($post['vacancy']), $this->vacancy, $post['company'] ) 
+            );
+            //echo $counts."\n";
+            if ( $counts == 0 ) {
                 $args = [
                     'post_type' => $this->vacancy,
                     'post_title' => wp_strip_all_tags($post['vacancy']),
@@ -87,10 +91,11 @@ class Job_Custom_Post_Types {
                     'post_date' => $date
                 ];
                 $obj_id = wp_insert_post( $args );
+                $saved++;
                 wp_update_post( ['ID'=>$obj_id, 'post_name'=>'id'.$obj_id] );
                 unset($post['vacancy']);
                 do_action( 'create_from_file_'.$this->vacancy, $obj_id, $post );
-                $saved++;
+                
             } 
         }
         echo json_encode(['saved' => $saved, 'ignored' => count($posts) - $saved]); 
