@@ -44,19 +44,17 @@ class ParseExcelJob {
 			if (!($data = $this->parseLocation($data, $key))) continue;
 			$data = $this->sanitizeData($data);
 			$this->parseAddress($data, $key);
-			//$this->parseDesc($vacancy[2], $key);
 		}
 		return $this;
 	}
 
 	private function formatDate($date) {
-		// return $date;
 		return DateTime::createFromFormat('d.m.Y H:i:s', $date." 12:00:00");
 	}
 
 	private function parseCommon($data, $key) {
 		$this->parse[$key]['company'] = $this->filterSpaces(trim($data[0]));
-		$this->parse[$key]['vacancy'] = $this->filterSpaces(trim($data[2]));
+		$this->parse[$key]['vacancy'] = $this->filterVacancy(trim($data[2]));
 		$this->parse[$key]['salary'] = $this->filterSpaces(trim($data[6]));
 		$this->parse[$key]['date'] = $this->formatDate(trim($data[7]));
 		$this->parse[$key]['edu'] = mb_strtolower($data[3], 'utf-8');
@@ -67,13 +65,9 @@ class ParseExcelJob {
 		$this->parse[$key]['contact'] = ['address'=>'', 'phone'=>'', 'email'=>'', 'site'=>'', 'name'=>''];
 	}
 
-	private function parseDesc($data, $key) {
-		$this->parse[$key]['desc'] = '';
-		if (preg_match("/\((\.\s)?(.*)\)/ui", $data, $matches)) {
-			$this->parse[$key]['desc'] = $matches;
-			// $this->parse[$key]['vacancy'] = str_replace($matches[0], '', $data);
-			// $this->parse[$key]['desc'] = isset($matches[2]) ? $matches[2] : '';
-		}
+	private function filterVacancy($data) {
+		$data = preg_replace("/\(.\s+\)/", "", $data);
+		return $this->filterSpaces($data);
 	}
 
 	private function parseEmail($data, $key) {

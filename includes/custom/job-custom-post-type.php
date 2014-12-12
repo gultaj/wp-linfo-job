@@ -82,7 +82,6 @@ class Job_Custom_Post_Types {
             $counts = $wpdb->get_var( 
                 $wpdb->prepare( $sql, $date, wp_strip_all_tags($post['vacancy']), $this->vacancy, $post['company'] ) 
             );
-            //echo $counts."\n";
             if ( $counts == 0 ) {
                 $args = [
                     'post_type' => $this->vacancy,
@@ -95,10 +94,9 @@ class Job_Custom_Post_Types {
                 wp_update_post( ['ID'=>$obj_id, 'post_name'=>'id'.$obj_id] );
                 unset($post['vacancy']);
                 do_action( 'create_from_file_'.$this->vacancy, $obj_id, $post );
-                
             } 
         }
-        echo json_encode(['saved' => $saved, 'ignored' => count($posts) - $saved]); 
+        echo "Сохранено: {$saved}; Проигнорировано: ".(count($posts) - $saved); 
     }
 
     public function remove( $id ) {

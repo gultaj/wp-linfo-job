@@ -106,10 +106,13 @@ class Wp_Linfo_Job_Admin {
         }
     }
 
-    public function send_vacancy_email(  ) {
-    	$headers = 'От: lida.info <myname@lida.info>';
-    	$message = '';
-    	//wp_mail( $email, 'Новая вакансия', $message, $headers );
+    public function send_vacancy_email( $email, $key ) {
+    	$headers = 'From: lida.info <myname@lida.info>' . "\r\n";
+    	$message = wpsf_get_setting('linfo_job', 'job_settings', 'register_vacancy');
+        if (!empty($message)) {
+            $message = preg_replace("/%key%/", $key, $message);
+        	wp_mail( $email, 'Новая вакансия', $message, $headers );
+        }
     }
 
 }

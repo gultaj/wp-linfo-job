@@ -19,10 +19,11 @@ jQuery(document).ready(function( $ ) {
 	function checkKey() {
 		var key = $.trim($('#edit_key').val());
 		if (key.length == 6) {
-			var data = {action: 'check_job_key', obj_id: $('#obj_id').val(), user_key: key };
+			var data = {action: 'check_job_key', obj_id: $('#vacancy_id').val(), user_key: key };
 			$('#edit_key').parent().removeClass('has-error');
 			$('#edit_key, #check_key').attr('disabled', true);
 			$.post(ajax_object.ajax_url, data, function(response) {
+				console.log(response);
 				if (response === 'OK') {
 					var type = ($("#job_type").val() == 'vacancy') ? 'вакансию' : 'резюме';
 					if (confirm('Вы действительно хотите удалить '+type+'?')) {
