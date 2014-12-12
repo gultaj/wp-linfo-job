@@ -5,15 +5,23 @@ jQuery(document).ready(function( $ ) {
 	var html = '<div id="popover-group"><div class="input-group"><input type="text" id="edit_key" class="form-control input-sm"><span class="input-group-btn"><button class="btn btn-default btn-sm" id="check_key" type="button"> &raquo; </button></span></div>';
 	$('.vacancy__remove').popover({html: true, content: html, placement: 'bottom'});
 
-	$('#send-job').click(function() {
+	$('#send-vacancy,#send-resume').click(function(event) {
 		var errors;
 		$('.has-error').removeClass('has-error');
 		$('.help-block').remove();
 		$('.alert').remove();
-		if (errors = hasErrors()) {
-			showErrors(errors);
+		if (errors = hasErrors(event.target)) {
+			showErrors(errors, event.target);
 			return false;
 		}
+	});
+	$('.job__tabs a').click(function() {
+		if ($(this).parent().hasClass('active')) return false;
+		$('.job__tabs li').removeClass('active');
+		$(this).parent().addClass('active');
+		$("#content form").hide();
+		$("#"+this.id+"-form").show();
+		return false;
 	});
 
 	function checkKey() {
@@ -47,9 +55,10 @@ jQuery(document).ready(function( $ ) {
 		return false;
 	}
 
-	function hasErrors() {
+	function hasErrors(target) {
 		var errors = [];
 		var elems = ['title', 'company', 'salary'];
+		if (target.id == 'send-resume') elems = ['resume_title', 'resume_salary', 'resume_company'];
 		for (var i = 0; i < elems.length; i++) {
 			var length = $.trim($('#' + elems[i]).val()).length;
 			if (!length) {
@@ -61,7 +70,7 @@ jQuery(document).ready(function( $ ) {
 		return (errors.length) ? errors : false;
 	}
 
-	function showErrors(errors) {
+	function showErrors(errors, target) {
 		var fields = [];
 		for (var i = 0; i < errors.length; i++) {
 			var elem = $('#' + errors[i].id).parent();
@@ -74,7 +83,7 @@ jQuery(document).ready(function( $ ) {
 			'<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>'+
 			'<strong>Чтобы продолжить устраните все ошибки!</strong>'+
 			'<br><br>Поля с ошибками: <ul>'+fields.join('')+'</ul> </div>';
-		$('#job-form').before(alert);
+		$(target).parents('form').prepend(alert);
 		$('body').scrollTop(0);
 	}
 });

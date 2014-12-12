@@ -9,7 +9,8 @@
             <div><?php Wp_Linfo_Job_Public::breadcrumbs( $post_type ) ?></div>
             <div class="content-header row"> <?php Wp_Linfo_Job_Public::title( $post_type ) ?> </div>
             <div class="job__aside_links">
-                <?= Wp_Linfo_Job_Public::get_archive_link('resume') ?>
+                <?php Wp_Linfo_Job_Public::get_archive_link('resume') ?>
+                
                 <button type="button" class="vacancy__remove icon-cancel" title="Для удаления введите ключ"></button>
             </div>
             <div class="job__flash"><?= Wp_Linfo_Job_Public::flashmessages() ?></div>

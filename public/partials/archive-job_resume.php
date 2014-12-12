@@ -6,8 +6,11 @@
         <div id="content" class="col-xs-12" role="main">
             <div><?php Wp_Linfo_Job_Public::breadcrumbs( $object ) ?></div>
             <div class="content-header row"> <?php Wp_Linfo_Job_Public::title( $object ) ?> </div>
-            <div class="job__aside_links"><?= Wp_Linfo_Job_Public::get_archive_link('vacancy') ?></div>
             <div class="job__flash"><?= Wp_Linfo_Job_Public::flashmessages() ?></div>
+            <ul class="nav nav-tabs">
+                <li role="navigation"><a href="<?= Wp_Linfo_Job_Public::get_archive_link('vacancy') ?>">Вакансии</a></li>
+                <li role="navigation" class="active"><a href="">Резюме</a></li>
+            </ul>
         <?php if (!($resumes = Wp_Linfo_Job_Public::get_resumes())) : ?>
             <h3>Ничего не найдено.</h3>
             <a class="primary" href="<?= home_url('/'.$object->rewrite['slug'].'?new' ); ?>">Добавте своё резюме</a>

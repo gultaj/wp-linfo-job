@@ -8,13 +8,14 @@ class Wp_Linfo_Job_Public {
 
 	public static $vacancy = 'job_vacancy';
 	public static $resume = 'job_resume';
+    public static $slug;
 
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
         self::$post_per_page = wpsf_get_setting('linfo_job', 'job_settings', 'posts_per_page');
         self::$vacancy = $plugin->job->vacancy;
         self::$resume  = $plugin->job->resume;
-		// $this->version = $version;
+		self::$slug  = $plugin->job->slug;
 	}
 
 	public function enqueue_styles() {
@@ -55,7 +56,7 @@ class Wp_Linfo_Job_Public {
                 }
             }
             if (isset($_GET['new'])) {
-                return plugin_dir_path( __FILE__ ) . "partials/new-{$post_type}.php";
+                return plugin_dir_path( __FILE__ ) . "partials/new-job.php";
             }
     		if ( is_single() ) {
                 return plugin_dir_path( __FILE__ ) . "partials/single-{$post_type}.php";
@@ -132,11 +133,12 @@ class Wp_Linfo_Job_Public {
     }
 
     public static function get_archive_link( $post_type ) {
-        global $wpdb;
+        // global $wpdb;
     	$obj = get_post_type_object( self::$$post_type );
-    	$link = '<a href="'. home_url('/'.$obj->rewrite['slug'] ).'" class="resume__list_link">';
+        return home_url('/'.$obj->rewrite['slug'] );
+    	/*$link = '<a href="'. home_url('/'.$obj->rewrite['slug'] ).'" class="resume__list_link">';
     	$link .= 'Посмотреть '.mb_strtolower($obj->label, 'utf-8').'</a>';
-    	return $link;
+    	return $link;*/
     }
 
     public static function get_key( $obj_id ) {
@@ -158,7 +160,7 @@ class Wp_Linfo_Job_Public {
     			<?= $obj->label ?> города Лиды
     		<?php endif; ?>
     		</h2>
-    		<a class="icon-plus job__add_link" href="<?= home_url('/'.$obj->rewrite['slug'].'?new' ); ?>"><?= $obj->labels->add_new ?></a>
+    		<a class="icon-plus job__add_link" href="<?= home_url('/'.self::$slug.'?new' ); ?>">Добавить</a>
     	</div>
     <?php }
 
