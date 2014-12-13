@@ -28,12 +28,14 @@ function wpsf_example_settings( $wpsf_settings ) {
             	'id' => 'register_vacancy',
             	'title' => 'Текст после регистрации вакансии',
             	'type' => 'textarea',
-                'class' => ''
+                'class' => '',
+                'desc' => 'Для отображения сгенерированного ключа вставте <strong>%key%</strong>'
             ], [
                 'id' => 'register_resume',
                 'title' => 'Текст после регистрации резюме',
                 'type' => 'textarea',
-                'class' => ''
+                'class' => '',
+                'desc' => 'Для отображения сгенерированного ключа вставте <strong>%key%</strong>'
             ]
         ]
     ];

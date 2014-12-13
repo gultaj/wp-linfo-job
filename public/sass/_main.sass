@@ -52,10 +52,12 @@ $base: #009ee7
 		text-decoration: none !important
 		background: #fff
 		color: $base
-.job__aside_links
-	padding-bottom: 3px
-	border-bottom: 1px solid #ddd
-	margin-bottom: 5px
+.job__panel
+	+clr
+.job__date
+	float: left
+	color: #aaa
+	font-size: 14px
 .job__pagination
 	text-align: center
 	border-top: 1px solid #ddd
@@ -70,7 +72,7 @@ $base: #009ee7
 	color: $base
 	font-size: 16px
 
-.vacancy
+.job
 	font-size: 14px
 	&>div
 		&:nth-child(odd)
@@ -81,11 +83,12 @@ $base: #009ee7
 		+col(1/3)
 	dd	
 		+col(2/3)
-.vacancy__title
+.job__title
 	padding: 5px 0
 	padding-left: 10px
 	border-left: 3px solid $base
 	margin-bottom: 5px
+	margin-top: 5px
 .contact__header
 	font-size: 14px
 	font-weight: 600
@@ -107,7 +110,7 @@ $base: #009ee7
 		padding-top: 5px
 	.btn
 		border-radius: 2px
-.vacancy__remove
+.job__remove
 	float: right
 	background: none
 	border: 0
@@ -144,6 +147,7 @@ $base: #009ee7
 		font-size: 16px !important
 
 .nav-tabs
+	padding-left: 5px !important
 	margin-bottom: 5px !important
 	&>li
 		&>a
@@ -151,5 +155,8 @@ $base: #009ee7
 			font-size: 14px
 		&.active>a
 			color: $base !important
+	&.job--single
+		li.active>a
+			cursor: pointer !important
 #resume-form
 	display: none

@@ -8,28 +8,32 @@
         <div id="content" class="col-xs-12" role="main">
             <div><?php Wp_Linfo_Job_Public::breadcrumbs( $post_type ) ?></div>
             <div class="content-header row"> <?php Wp_Linfo_Job_Public::title( $post_type ) ?> </div>
-            <div class="job__aside_links">
-                <?php Wp_Linfo_Job_Public::get_archive_link('vacancy') ?>
-                <button type="button" class="vacancy__remove icon-cancel" title="Для удаления введите ключ"></button>
+            <ul class="nav nav-tabs job--single">
+                <li role="navigation"><a href="<?= Wp_Linfo_Job_Public::get_archive_link('vacancy') ?>">Вакансии</a></li>
+                <li role="navigation" class="active"><a href="<?= Wp_Linfo_Job_Public::get_archive_link('resume') ?>">Резюме</a></li>
+            </ul>
+            <div class="job__panel">
+                <div class="job__date"title="Дата размещения"><?= Wp_Linfo_Job_Public::post_date($object->post_date) ?></div>
+                <button type="button" class="job__remove icon-cancel" title="Для удаления введите ключ"></button>
             </div>
             <div class="job__flash"><?= Wp_Linfo_Job_Public::flashmessages() ?></div>
-            <h3 class="vacancy__title"><?= $object->post_title ?></h3>
+            <h3 class="job__title"><?= $object->post_title ?></h3>
             <input type="hidden" name="obj_id" id="obj_id" value="<?= $object->ID ?>">
             <input type="hidden" name="job_type" id="job_type" value="resume">
-            <div class="vacancy">
-                <div class="vacancy__education">
+            <div class="job">
+                <div class="job__education">
                     <dt>Образование</dt>
                     <dd><?= Job_Meta_Boxes::get_elem('education', $meta['edu']) ?></dd>
                 </div>
-                <div class="vacancy__stage">
+                <div class="job__stage">
                     <dt>Опыт</dt>
                     <dd><?= Job_Meta_Boxes::get_elem('stage', $meta['stage']) ?></dd>
                 </div>
-                <div class="vacancy__salary">
+                <div class="job__salary">
                     <dt>Оплата</dt> <dd><?= $meta['salary'] ?></dd>
                 </div>
                 <?php if (!empty($meta['desc'])) : ?>
-                <div class="vacancy__desc">
+                <div class="job__desc">
                     <dt>Дополнительно</dt> <dd><?= nl2br($meta['desc']) ?></dd>
                 </div>
                 <?php endif ?>

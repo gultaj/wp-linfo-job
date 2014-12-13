@@ -38,8 +38,9 @@ class Wp_Linfo_Job_Ajax {
 			$reader = new ParseExcelJob( $temp_file );
 			$data = $reader->readData()->parse()->getResultData();
 			do_action( 'create_from_file', $data);
+			if (file_exists($temp_file)) unlink($temp_file);
 		} else {
-			echo "Error: can't load file";
+			echo "Error: не возможно загрузить файл";
 		}
 		die();
 	}

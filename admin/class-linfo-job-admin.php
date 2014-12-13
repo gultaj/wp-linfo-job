@@ -115,4 +115,13 @@ class Wp_Linfo_Job_Admin {
         }
     }
 
+    public function send_resume_email( $email, $key ) {
+    	$headers = 'From: lida.info <myname@lida.info>' . "\r\n";
+    	$message = wpsf_get_setting('linfo_job', 'job_settings', 'register_resume');
+        if (!empty($message)) {
+            $message = preg_replace("/%key%/", $key, $message);
+        	wp_mail( $email, 'Новое резюме', $message, $headers );
+        }
+    }
+
 }

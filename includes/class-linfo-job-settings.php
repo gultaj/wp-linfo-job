@@ -38,7 +38,6 @@ class Wp_Linfo_Job_Settings {
 		<div class="preloader">
             <span><img src="/wp-includes/images/spinner-2x.gif" alt=""></span>
         </div>
-		</div>
 		<style> .preloader {position: absolute; top:0; left:0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, .5); display: none; } .preloader.visible {display: block; } .preloader span {position: absolute; left: 50%; top: 50%; } </style>
 		<table class="form-table"><tbody>
 			<tr>

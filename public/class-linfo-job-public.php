@@ -164,6 +164,10 @@ class Wp_Linfo_Job_Public {
     	</div>
     <?php }
 
+    public static function post_date( $date ) {
+    	return DateTime::createFromFormat('Y-m-d H:i:s', $date)->format('d.m.Y');
+    }
+
     public static function breadcrumbs( $obj ) { ?>
         <ol class="breadcrumb">
         	<li><a href="<?= home_url() ?>">Главная</a></li>

@@ -104,6 +104,7 @@ class Wp_Linfo_Job {
 		$this->loader->add_action( 'admin_head-nav-menus.php', $plugin_admin, 'add_menu_meta_box' );
 		$this->loader->add_action( 'cron_linfo_job', $plugin_admin, 'clear_expired_objects' );
 		$this->loader->add_action( 'send_vacancy_key', $plugin_admin, 'send_vacancy_email', 10, 2 );
+		$this->loader->add_action( 'send_resume_key', $plugin_admin, 'send_resume_email', 10, 2 );
 	}
 
 	private function define_public_hooks() {
