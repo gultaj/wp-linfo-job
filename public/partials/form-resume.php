@@ -26,8 +26,8 @@
 		</div>
 		<div class="form-group">
 			<label for="resume_desc" class="col-sm-3 control-label">Дополнительно</label>
-			<div class="col-sm-4">
-				<textarea name="resume[desc]" id="resume_desc" cols="70" rows="10"></textarea>
+			<div class="col-sm-6">
+				<textarea class="form-control" name="resume[desc]" id="resume_desc" cols="70" rows="10"></textarea>
 			</div>
 		</div>
 		<div class="form-group">
