@@ -158,5 +158,12 @@ $base: #009ee7
 	&.job--single
 		li.active>a
 			cursor: pointer !important
-#resume-form
+#resume-form, #vacancy-form
 	display: none
+	&.is-active
+		display: initial
+.content-header
+	span
+		display: none
+		&.is-active
+			display: initial

@@ -1,4 +1,4 @@
-<form method="post" id="resume-form" class="form-horizontal" role="form">
+<form method="post" id="resume-form" class="form-horizontal <?= isset($_GET['resume'])?'is-active':'' ?>" role="form">
 	<fieldset>
 		<div class="form-group">
 			<label for="resume_title" class="col-sm-3 control-label">Должность <span class="text-danger">*</span></label>

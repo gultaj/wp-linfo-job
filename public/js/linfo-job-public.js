@@ -17,10 +17,10 @@ jQuery(document).ready(function( $ ) {
 	});
 	$('.job__tabs a').click(function() {
 		if ($(this).parent().hasClass('active')) return false;
-		$('.job__tabs li').removeClass('active');
-		$(this).parent().addClass('active');
-		$("#content form").hide();
-		$("#"+this.id+"-form").show();
+		$('.job__tabs li').toggleClass('active');
+		// $(this).parent().addClass('active');
+		$("#content form, .content-header span").toggleClass('is-active');
+		// $("#"+this.id+"-form").show();
 		return false;
 	});
 

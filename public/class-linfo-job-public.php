@@ -29,7 +29,7 @@ class Wp_Linfo_Job_Public {
         $post_type = get_query_var( 'post_type' );
         wp_register_script( 'job-ya-share', '//yastatic.net/share/share.js', [], '', true );
         if ( $post_type == $this->plugin->job->vacancy || $post_type == $this->plugin->job->resume) {
-    		wp_enqueue_script( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'js/linfo-job-public.js', [ 'lidainfo-bootstrap' ], $this->plugin->get_version(), false );
+    		wp_enqueue_script( $this->plugin->get_plugin_name(), plugin_dir_url( __FILE__ ) . 'js/linfo-job-public.min.js', [ 'lidainfo-bootstrap' ], $this->plugin->get_version(), true );
             if (is_single()) {
                 wp_localize_script( $this->plugin->get_plugin_name(), 'ajax_object', ['ajax_url' => admin_url( 'admin-ajax.php' ) ] );
                 wp_enqueue_script( 'job-ya-share' );
@@ -160,7 +160,8 @@ class Wp_Linfo_Job_Public {
     			<?= $obj->label ?> города Лиды
     		<?php endif; ?>
     		</h2>
-    		<a class="icon-plus job__add_link" href="<?= home_url('/'.self::$slug.'?new' ); ?>">Добавить</a>
+            <?php $vars = ($obj->query_var == self::$resume)?'&resume':'' ?>
+    		<a class="icon-plus job__add_link" href="<?= home_url('/'.self::$slug.'?new'.$vars ); ?>">Добавить</a>
     	</div>
     <?php }
 
