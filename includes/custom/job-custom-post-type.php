@@ -7,7 +7,7 @@ class Job_Custom_Post_Types {
 	
 	public $resume = "job_resume";
 
-    public $slug = 'praca';
+    public $slug = 'job';
 
 
 	public function register() {

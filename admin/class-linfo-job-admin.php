@@ -107,20 +107,20 @@ class Wp_Linfo_Job_Admin {
     }
 
     public function send_vacancy_email( $email, $key ) {
-    	$headers = 'From: lida.info <myname@lida.info>' . "\r\n";
+    	$headers = 'From: lida.info <info@lida.info>' . "\r\n";
     	$message = wpsf_get_setting('linfo_job', 'job_settings', 'register_vacancy');
         if (!empty($message)) {
             $message = preg_replace("/%key%/", $key, $message);
-        	wp_mail( $email, 'Новая вакансия', $message, $headers );
+        	wp_mail( $email, 'Ваша вакансия успешно добавлена', $message, $headers );
         }
     }
 
     public function send_resume_email( $email, $key ) {
-    	$headers = 'From: lida.info <myname@lida.info>' . "\r\n";
+    	$headers = 'From: lida.info <info@lida.info>' . "\r\n";
     	$message = wpsf_get_setting('linfo_job', 'job_settings', 'register_resume');
         if (!empty($message)) {
             $message = preg_replace("/%key%/", $key, $message);
-        	wp_mail( $email, 'Новое резюме', $message, $headers );
+        	wp_mail( $email, 'Ваше резюме успешно добавлено', $message, $headers );
         }
     }
 

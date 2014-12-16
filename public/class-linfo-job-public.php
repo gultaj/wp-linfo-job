@@ -178,7 +178,7 @@ class Wp_Linfo_Job_Public {
         	<?php else : ?>
                 <?php if (isset($_GET['new'])) : ?>
                     <li><a href="<?= home_url('/'.$obj->rewrite['slug'] ) ?>"><?= $obj->label ?></a></li>
-                    <li class="active"><?= $obj->labels->add_new_item ?></li>
+                    <li class="active">Добавить</li>
                 <?php else : ?>
             		<li class="active"><?= $obj->label ?></li>
                 <?php endif; ?>

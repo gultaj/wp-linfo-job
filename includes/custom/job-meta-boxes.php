@@ -83,7 +83,8 @@ class Job_Meta_Boxes {
 			'sanitize_email' => ['contact' => ['email']],
 		];
 		$data = $this->sanitize_meta( $data, $sanitize );
-		$data['expiry'] = strtotime($data['expiry'], time());
+		if (!is_numeric($data['expiry']))
+			$data['expiry'] = strtotime($data['expiry'], time());
 		$data['key'] = $this->generate_password();
 		foreach ($data as $key => $value) {
 			update_post_meta( $obj_id, $key, $value );
