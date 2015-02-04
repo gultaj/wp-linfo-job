@@ -69,7 +69,8 @@ class Wp_Linfo_Job_Public {
     }
 
     public function custom_posts_per_page($query) {
-        if ( is_post_type_archive( $this->plugin->job->vacancy) && !is_admin() ) {
+        if ( (is_post_type_archive( $this->plugin->job->vacancy)  || is_post_type_archive( $this->plugin->job->resume))
+            && !is_admin() ) {
             $query->set('posts_per_page', self::$post_per_page);
         }
     }

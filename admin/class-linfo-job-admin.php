@@ -94,15 +94,16 @@ class Wp_Linfo_Job_Admin {
 
     public function clear_expired_objects() {
     	global $wpdb;
-    	$time = time();
+    	// $time = time();
     	$sql = "SELECT post.ID
                 FROM wp_posts post 
                 INNER JOIN wp_postmeta AS meta ON post.ID = meta.post_id
-                WHERE (post.post_type = '{$this->plugin->job->vacancy}') AND post.post_status = 'publish'
-                    AND (mt1.meta_key = 'expiry' AND CAST(mt1.meta_value AS CHAR) < {$time})";
+                WHERE (post.post_type = '{$this->plugin->job->vacancy}' OR post.post_type = '{$this->plugin->job->resume}') 
+                    AND post.post_status = 'publish'
+                    AND (meta.meta_key = 'expiry' AND CAST(meta.meta_value AS CHAR) < UNIX_TIMESTAMP())";
         $ids = $wpdb->get_results( $sql );
-        foreach ($ids as $id) {
-        	wp_delete_post( $id, true );
+        foreach ($ids as $obj) {
+        	wp_delete_post( $obj->ID, true );
         }
     }
 

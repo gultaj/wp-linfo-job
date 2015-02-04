@@ -20,6 +20,7 @@ function wpsf_example_settings( $wpsf_settings ) {
         'section_order' => 5,
         'fields' => [
             [
+
                 'id' => 'posts_per_page',
                 'title' => 'Записей на странице',
                 'type' => 'number',
