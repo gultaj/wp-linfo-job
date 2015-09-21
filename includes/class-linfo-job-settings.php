@@ -46,6 +46,9 @@ class Wp_Linfo_Job_Settings {
 					<input type="file" name="job_parse" id="job_parse_file" placeholder="" class="regular-text"
 						accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
 					<button type="button" class="button-secondary" id="load_parse_file">Загрузить</button>
+					<p class="description">
+						url: <a target="_blank" href="http://vacancy.mintrud.by/user/Pages/Public/Main.aspx">http://vacancy.mintrud.by/user/Pages/Public/Main.aspx</a>
+					</p>
 				</td>
 			</tr>
 		</tbody></table>

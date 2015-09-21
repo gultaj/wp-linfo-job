@@ -19,16 +19,20 @@ $base: #009ee7
 	&:nth-child(odd)
 		background: #eee
 .job__item_name
-	+col(2,5)
+	+col(3,9)
 .job__item_company
-	+col(2,5)
+	+col(3,9)
+.job__item_date
+	+col(1,9)
 .job__item_salary
-	+col(1,5)
+	+col(2,9)
 	text-align: right
 .job__list_name
 	@extend .job__item_name
 .job__list_company
 	@extend .job__item_company
+.job__list_date
+	@extend .job__item_date
 .job__list_salary
 	@extend .job__item_salary
 .job__add_link

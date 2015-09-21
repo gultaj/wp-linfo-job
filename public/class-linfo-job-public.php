@@ -89,7 +89,7 @@ class Wp_Linfo_Job_Public {
                     AND post.post_status = 'publish'
                     AND (meta.meta_key = 'company' OR meta.meta_key = 'salary')
                 GROUP BY post.ID
-                ORDER BY post.post_title
+                ORDER BY post.post_date DESC, post_title
 				LIMIT ". $offset .", ". $post_per_page;
         
         $posts = $wpdb->get_results( $sql );

@@ -19,12 +19,14 @@
                 <div class="job__list_header">
                     <div class="job__list_name">Вакансия</div>   
                     <div class="job__list_company">Организация</div>
+                    <div class="job__list_date">Дата</div>
                     <div class="job__list_salary">Оплата</div>    
                 </div>
                 <?php foreach ($vacancies as $vacancy) : ?>
                 <a href="<?= get_permalink( $vacancy->ID ) ?>" class="job__item">
                     <div class="job__item_name"><?= $vacancy->post_title ?></div>   
                     <div class="job__item_company"><?= $vacancy->company ?></div>
+                    <div class="job__item_date"><?= Wp_Linfo_Job_Public::post_date($vacancy->post_date) ?></div>
                     <div class="job__item_salary"><?= $vacancy->salary ?></div>
                 </a>
                 <?php endforeach; ?>

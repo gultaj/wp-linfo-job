@@ -70,19 +70,27 @@ class Job_Custom_Post_Types {
 
     public function create_from_file( $posts ) {
         global $wpdb;
-        $saved = 0;
+        $saved = $updated = $duplicates = 0;
         foreach ($posts as $post) {
             $date = $post['date']->format('Y-m-d H:i:s');
-            $sql = "SELECT COUNT(*)
+            $sql = "SELECT ID
                     FROM wp_posts AS post
                     RIGHT JOIN wp_postmeta AS meta ON meta.post_id = post.ID 
-                    WHERE post.post_date = %s AND post.post_title = %s
-                    AND post.post_type = %s AND post.post_status = 'publish'
-                    AND meta.meta_key = 'company' AND meta.meta_value = %s";
-            $counts = $wpdb->get_var( 
-                $wpdb->prepare( $sql, $date, wp_strip_all_tags($post['vacancy']), $this->vacancy, $post['company'] ) 
+                    WHERE post.post_title = %s AND post.post_type = %s AND post.post_status = 'publish'
+                    AND meta.meta_key = 'company' AND meta.meta_value = %s
+                    ORDER BY post.post_date";
+            $ids = $wpdb->get_results( 
+                $wpdb->prepare( $sql, wp_strip_all_tags($post['vacancy']), $this->vacancy, $post['company'] ) 
             );
-            if ( $counts == 0 ) {
+
+            if (count($ids) > 0) {
+                wp_update_post( ['ID'=>$ids[0]->ID, 'post_date'=>$date] );
+                if ($d = $this->clear_duplicates($ids)) {
+                    $duplicates += $d;
+                }
+                do_action( 'create_from_file_'.$this->vacancy, $ids[0]->ID, $post );
+                $updated++;
+            } else {
                 $args = [
                     'post_type' => $this->vacancy,
                     'post_title' => wp_strip_all_tags($post['vacancy']),
@@ -96,7 +104,15 @@ class Job_Custom_Post_Types {
                 do_action( 'create_from_file_'.$this->vacancy, $obj_id, $post );
             } 
         }
-        echo "Сохранено: {$saved}; Проигнорировано: ".(count($posts) - $saved); 
+        echo "Сохранено: {$saved}; Обновлено: {$updated}; Дубликаты: {$duplicates}; Проигнорировано: ".(count($posts) - $saved - $updated); 
+    }
+
+    protected function clear_duplicates($duplicates) {
+        $count = count($duplicates);
+        for ($i = 1; $i < $count; $i++) { 
+            wp_delete_post( $duplicates[$i]->ID, true ); 
+        }
+        return ($count - 1) > 0 ? $count - 1 : false;
     }
 
     public function remove( $id ) {

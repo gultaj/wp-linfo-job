@@ -1,0 +1,11 @@
+{
+  "name": "wp-linfo-job",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gultaj/wp-linfo-job.git"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-sass": "^2.0.4"
+  }
+}
