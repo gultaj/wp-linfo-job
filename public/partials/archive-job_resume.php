@@ -19,12 +19,14 @@
                 <div class="job__list_header">
                     <div class="job__list_name">Должность</div>   
                     <div class="job__list_company">Имя</div>
+                    <div class="job__list_date">Дата</div>
                     <div class="job__list_salary">Оплата</div>    
                 </div>
                 <?php foreach ($resumes as $resume) : ?>
                 <a href="<?= get_permalink( $resume->ID ) ?>" class="job__item">
                     <div class="job__item_name"><?= $resume->post_title ?></div>   
                     <div class="job__item_company"><?= $resume->company ?></div>
+                    <div class="job__item_date"><?= Wp_Linfo_Job_Public::post_date($resume->post_date) ?></div>
                     <div class="job__item_salary"><?= $resume->salary ?></div>
                 </a>
                 <?php endforeach; ?>
